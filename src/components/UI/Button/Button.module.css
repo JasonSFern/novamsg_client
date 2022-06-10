@@ -1,0 +1,27 @@
+.button {
+  font: inherit;
+  cursor: pointer;
+  border-radius: 10px;
+  color: white;
+  padding: 0.75rem;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-weight: bold;
+}
+
+.button_icon {
+  border: 1px solid transparent;
+  background: transparent;
+}
+
+.button_icon:hover,
+.button_icon:active {
+  color: white;
+  background: transparent;
+  border: 1px solid white;
+}
+
+.button_icon:focus {
+  outline: none;
+}
