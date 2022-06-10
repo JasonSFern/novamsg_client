@@ -1,6 +1,6 @@
 # novamsg
 
-Front end componentt for a simple social media web app built using react and typescript
+Front end component for a simple social media web app built using react and typescript
 
 # Getting Started with Create React App
 
