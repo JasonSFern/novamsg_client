@@ -7,7 +7,11 @@ import AccountIcon from '../UI/Icon/AccountIcon';
 import FeedIcon from '../UI/Icon/FeedIcon';
 import MyPostsIcon from '../UI/Icon/MyPostsIcon';
 
-const MainHeader: React.FC<React.ReactNode> = () => {
+interface MainNavigationProps {
+  onShowUserProfile: () => void;
+}
+
+const MainHeader: React.FC<MainNavigationProps> = ({ onShowUserProfile }) => {
   return (
     <header className={classes.header}>
       <div>
@@ -39,7 +43,11 @@ const MainHeader: React.FC<React.ReactNode> = () => {
         <nav className={classes.nav}>
           <ul className={classes.reverse}>
             <li>
-              <Button displaystyle="button_icon" title="User Settings">
+              <Button
+                displaystyle="button_icon"
+                title="User Settings"
+                onClick={onShowUserProfile}
+              >
                 <span className={classes.icon}>
                   <AccountIcon />
                 </span>

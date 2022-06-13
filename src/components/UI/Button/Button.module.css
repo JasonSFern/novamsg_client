@@ -25,3 +25,17 @@
 .button_icon:focus {
   outline: none;
 }
+
+.button_outline {
+  border: 1px solid white;
+  background-color: transparent;
+}
+
+.button_outline:hover {
+  background-color: #741188;
+}
+
+.button_outline {
+  border: 1px solid white;
+  background-color: transparent;
+}
