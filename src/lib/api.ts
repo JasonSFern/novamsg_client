@@ -1,5 +1,10 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-import { RegisterInput, LoginInput, User } from '../interfaces/user.interface';
+import {
+  RegisterInput,
+  LoginInput,
+  User,
+  UserSession,
+} from '../interfaces/user.interface';
 
 const DOMAIN = process.env.REACT_APP_DOMAIN;
 
@@ -19,7 +24,7 @@ export const register = async (payload: RegisterInput): Promise<User> => {
 };
 
 // Login user with username and password
-export const login = async (payload: LoginInput): Promise<User> => {
+export const login = async (payload: LoginInput): Promise<UserSession> => {
   const response = await axios({
     method: 'POST',
     url: `${DOMAIN}/user/login`,

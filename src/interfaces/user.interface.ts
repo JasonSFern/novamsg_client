@@ -6,6 +6,18 @@ export interface User {
   updatedAt?: Date;
 }
 
+export interface UserSession {
+  auth: boolean;
+  status: number;
+  message: string;
+  session: {
+    token: string;
+    expires: number;
+    issued: number;
+    user_data: User;
+  };
+}
+
 export interface RegisterInput {
   username: string;
   email: string;

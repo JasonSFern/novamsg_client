@@ -3,12 +3,14 @@ import { useState, useContext, useEffect, Fragment, createRef } from 'react';
 import useAxios from '../../hooks/use-axios';
 import { login } from '../../lib/api';
 
-import { LoginInput, User } from '../../interfaces/user.interface';
+import { LoginInput, UserSession } from '../../interfaces/user.interface';
 
 import Button from '../UI/Button/Button';
 import LoadingSpinner from '../UI/LoadingSpinner/LoadingSpinner';
 
 import classes from './UserProfile.module.css';
+
+import AuthContext from '../../context/auth-context';
 
 export interface LoginFormProps {
   onSwitchAuthModeHandler: () => void;
@@ -21,12 +23,15 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchAuthModeHandler }) => {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const { sendRequest, status, data, error } = useAxios<LoginInput, User>(
-    login
-  );
+  const { sendRequest, status, data, error } = useAxios<
+    LoginInput,
+    UserSession
+  >(login);
 
   const usernameInputRef = createRef<HTMLInputElement>();
   const passwordInputRef = createRef<HTMLInputElement>();
+
+  const authCtx = useContext(AuthContext);
 
   const submitHandler = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
@@ -60,6 +65,14 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchAuthModeHandler }) => {
         console.log('success_msg: ', data);
         setStatusMessage('Login successful!');
         setStatusMessageType('success');
+
+        if (data) {
+          authCtx.login(
+            data.session.token,
+            data.session.user_data,
+            data.session.expires
+          );
+        }
       }
       setShowStatusMessage(true);
     }
@@ -67,6 +80,15 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchAuthModeHandler }) => {
 
   return (
     <section className={classes.auth}>
+      {showStatusMessage && (
+        <div
+          className={
+            statusMessageType === 'error' ? classes.error : classes.success
+          }
+        >
+          {statusMessage}
+        </div>
+      )}
       <h1>Login</h1>
       {status === 'pending' && (
         <div className="centered">
@@ -93,15 +115,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchAuthModeHandler }) => {
               ref={passwordInputRef}
             />
           </div>
-          {showStatusMessage && (
-            <div
-              className={
-                statusMessageType === 'error' ? classes.error : classes.success
-              }
-            >
-              {statusMessage}
-            </div>
-          )}
           <div className={classes.actions}>
             {!isLoading && (
               <Fragment>
