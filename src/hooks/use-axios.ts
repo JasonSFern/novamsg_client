@@ -53,7 +53,7 @@ const useAxios = <T, I>(
     error: null,
   });
 
-  const fetchData = useCallback(
+  const sendRequest = useCallback(
     async (params: T) => {
       dispatch({ type: 'PENDING' });
       try {
@@ -72,7 +72,7 @@ const useAxios = <T, I>(
     [requestFunction]
   );
 
-  return { fetchData, ...axiosState };
+  return { sendRequest, ...axiosState };
 };
 
 export default useAxios;

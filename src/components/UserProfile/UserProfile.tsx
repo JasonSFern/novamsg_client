@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 
 import Modal from '../UI/Modal/Modal';
+import LoginForm from './LoginForm';
 
 import RegisterForm from './RegisterForm';
 
@@ -9,9 +10,22 @@ interface UserProfileProps {
 }
 
 const UserProfile: React.FC<UserProfileProps> = ({ onClose }) => {
+  const [isLogin, setIsLogin] = useState<boolean>(true);
+
+  const isLoggedIn = false;
+
+  const switchAuthModeHandler = () => {
+    setIsLogin((prevState) => !prevState);
+  };
+
   const didSubmitModalContent = (
     <React.Fragment>
-      <RegisterForm />
+      {!isLoggedIn && isLogin && (
+        <LoginForm onSwitchAuthModeHandler={switchAuthModeHandler} />
+      )}
+      {!isLoggedIn && !isLogin && (
+        <RegisterForm onSwitchAuthModeHandler={switchAuthModeHandler} />
+      )}
     </React.Fragment>
   );
 
