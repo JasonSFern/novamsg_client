@@ -2,6 +2,7 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import {
   RegisterInput,
   LoginInput,
+  PasswordChangeInput,
   User,
   UserSession,
 } from '../interfaces/user.interface';
@@ -28,6 +29,22 @@ export const login = async (payload: LoginInput): Promise<UserSession> => {
   const response = await axios({
     method: 'POST',
     url: `${DOMAIN}/user/login`,
+    data: payload,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  console.log(response);
+
+  return await response.data;
+};
+
+export const changeUserPass = async (
+  payload: PasswordChangeInput
+): Promise<User> => {
+  const response = await axios({
+    method: 'PUT',
+    url: `${DOMAIN}/user/${payload.id}`,
     data: payload,
     headers: {
       'Content-Type': 'application/json',

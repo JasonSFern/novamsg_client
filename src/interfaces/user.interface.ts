@@ -28,3 +28,9 @@ export interface LoginInput {
   username: string;
   password: string;
 }
+
+export interface PasswordChangeInput {
+  id: number;
+  new_password: string;
+  current_password: string;
+}

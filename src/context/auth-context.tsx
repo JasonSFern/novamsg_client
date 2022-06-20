@@ -40,7 +40,7 @@ export const AuthContextProvider: React.FC = ({ children }) => {
     setDuration(undefined);
     localStorage.removeItem('token');
     localStorage.removeItem('userData');
-    localStorage.removeItem('expirationTime');
+    localStorage.removeItem('duration');
 
     if (logoutTimer) {
       clearTimeout(logoutTimer);
@@ -66,7 +66,9 @@ export const AuthContextProvider: React.FC = ({ children }) => {
 
   useEffect(() => {
     if (tokenData && tokenData.duration !== 0) {
-      logoutTimer = setTimeout(logoutHandler, tokenData.duration);
+      const remainingTime = calculateRemainingTime(tokenData.duration);
+
+      logoutTimer = setTimeout(logoutHandler, remainingTime);
     }
   }, [tokenData, logoutHandler]);
 
