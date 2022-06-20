@@ -1,43 +1,42 @@
-import { createRef, Fragment, useEffect, useState } from 'react';
+import { useState, useContext, useEffect, Fragment, createRef } from 'react';
 
 import useAxios from '../../hooks/use-axios';
-import { register } from '../../lib/api';
+import { login } from '../../lib/api';
 
-import { RegisterInput, User } from '../../interfaces/user.interface';
+import { LoginInput, UserSession } from '../../interfaces/user.interface';
 
 import Button from '../UI/Button/Button';
 import LoadingSpinner from '../UI/LoadingSpinner/LoadingSpinner';
 
 import classes from './UserProfile.module.css';
 
-export interface RegisterFormProps {
+import AuthContext from '../../context/auth-context';
+
+export interface LoginFormProps {
   onSwitchAuthModeHandler: () => void;
 }
 
-const RegisterForm: React.FC<RegisterFormProps> = ({
-  onSwitchAuthModeHandler,
-}) => {
+const LoginForm: React.FC<LoginFormProps> = ({ onSwitchAuthModeHandler }) => {
   const [showStatusMessage, setShowStatusMessage] = useState<boolean>(false);
   const [statusMessageType, setStatusMessageType] = useState<string>('success');
   const [statusMessage, setStatusMessage] = useState<string>('');
 
-  const { sendRequest, status, data, error } = useAxios<RegisterInput, User>(
-    register
-  );
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const emailInputRef = createRef<HTMLInputElement>();
+  const { sendRequest, status, data, error } = useAxios<
+    LoginInput,
+    UserSession
+  >(login);
+
   const usernameInputRef = createRef<HTMLInputElement>();
   const passwordInputRef = createRef<HTMLInputElement>();
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const authCtx = useContext(AuthContext);
 
   const submitHandler = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
 
-    let enteredEmail, enteredUsername, enteredPassword;
-
-    if (emailInputRef.current != null)
-      enteredEmail = emailInputRef.current?.value;
+    let enteredUsername, enteredPassword;
 
     if (usernameInputRef.current != null)
       enteredUsername = usernameInputRef.current?.value;
@@ -45,12 +44,11 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
     if (passwordInputRef.current != null)
       enteredPassword = passwordInputRef.current?.value;
 
-    if (enteredEmail && enteredUsername && enteredPassword) {
+    if (enteredUsername && enteredPassword) {
       setIsLoading(true);
 
       sendRequest({
         username: enteredUsername,
-        email: enteredEmail,
         password: enteredPassword,
       });
     }
@@ -65,10 +63,16 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
         setStatusMessageType('error');
       } else {
         console.log('success_msg: ', data);
-        setStatusMessage(
-          'Registration successful! You may now login to your newly created account'
-        );
+        setStatusMessage('Login successful!');
         setStatusMessageType('success');
+
+        if (data) {
+          authCtx.login(
+            data.session.token,
+            data.session.user_data,
+            data.session.expires
+          );
+        }
       }
       setShowStatusMessage(true);
     }
@@ -85,7 +89,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
           {statusMessage}
         </div>
       )}
-      <h1>Sign Up</h1>
+      <h1>Login</h1>
       {status === 'pending' && (
         <div className="centered">
           <LoadingSpinner />
@@ -93,10 +97,6 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
       )}
       {status !== 'pending' && (
         <form onSubmit={submitHandler}>
-          <div className={classes.control}>
-            <label htmlFor="email">Your Email</label>
-            <input type="email" id="email" required ref={emailInputRef} />
-          </div>
           <div className={classes.control}>
             <label htmlFor="username">Your Username</label>
             <input
@@ -119,23 +119,23 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
             {!isLoading && (
               <Fragment>
                 <Button
-                  title="Create Account"
+                  title="Login"
                   type="submit"
                   displaystyle="button_outline"
                 >
-                  Create Account
+                  Login
                 </Button>
                 <Button
-                  title="Login to Existing Account"
                   type="button"
+                  title="Create Account"
                   displaystyle="button_outline"
                   onClick={onSwitchAuthModeHandler}
                 >
-                  Login with existing account
+                  Create new account
                 </Button>
               </Fragment>
             )}
-            {isLoading && <p>Creating new user...</p>}
+            {isLoading && <p>Sending request...</p>}
           </div>
         </form>
       )}
@@ -143,4 +143,4 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
   );
 };
 
-export default RegisterForm;
+export default LoginForm;
