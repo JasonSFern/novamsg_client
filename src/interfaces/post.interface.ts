@@ -22,9 +22,9 @@ export interface Post {
   id: number;
   user_id: number;
   content: string;
-  createdAt?: Date;
-  updatedAt?: Date;
-  author?: User;
+  createdAt: Date;
+  updatedAt: Date;
+  author: User;
   post_likes?: PostLikes[];
   comments?: PostComments[];
 }
