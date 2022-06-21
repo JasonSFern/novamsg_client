@@ -11,7 +11,7 @@ import AuthContext from '../../context/auth-context';
 import classes from './UserProfile.module.css';
 import { PasswordChangeInput, User } from '../../interfaces/user.interface';
 
-const ProfileForm = () => {
+const ProfileForm: React.FC = () => {
   const authCtx = useContext(AuthContext);
 
   const [showStatusMessage, setShowStatusMessage] = useState(false);
