@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios from 'axios';
 import {
   RegisterInput,
   LoginInput,
@@ -6,6 +6,7 @@ import {
   User,
   UserSession,
 } from '../interfaces/user.interface';
+import { PostPaginated, PostPaginateInput } from '../interfaces/post.interface';
 
 const DOMAIN = process.env.REACT_APP_DOMAIN;
 
@@ -45,6 +46,23 @@ export const changeUserPass = async (
   const response = await axios({
     method: 'PUT',
     url: `${DOMAIN}/user/${payload.id}`,
+    data: payload,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  console.log(response);
+
+  return await response.data;
+};
+
+// Get all posts with pagination
+export const getAllPosts = async (
+  payload: PostPaginateInput
+): Promise<PostPaginated> => {
+  const response = await axios({
+    method: 'POST',
+    url: `${DOMAIN}/post/all-posts`,
     data: payload,
     headers: {
       'Content-Type': 'application/json',
