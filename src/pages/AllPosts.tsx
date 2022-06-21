@@ -14,7 +14,6 @@ const AllPosts: React.FC = () => {
   const [totalPages, setTotalPages] = useState(1);
 
   const orderData = 'desc';
-  console.log(orderData);
 
   const { sendRequest, status, data, error } = useAxios<
     PostPaginateInput,
@@ -54,9 +53,9 @@ const AllPosts: React.FC = () => {
         </div>
       )}
       {error && <p className="centered focused">{error}</p>}
-      {status === 'completed' && (!data || data.rows.length === 0) && (
-        <NoPostsFound />
-      )}
+      {!error &&
+        status === 'completed' &&
+        (!data || data.rows.length === 0) && <NoPostsFound />}
       {status === 'completed' && data && data.rows.length > 0 && (
         <PostList
           selectedpage={selectedPage}

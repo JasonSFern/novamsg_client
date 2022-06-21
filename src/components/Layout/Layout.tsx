@@ -4,7 +4,7 @@ import MainNavigation from './MainNavigation';
 import classes from './Layout.module.css';
 import UserProfile from '../UserProfile/UserProfile';
 
-const Layout: React.FC<React.ReactNode> = (props) => {
+const Layout: React.FC<React.ReactNode> = ({ children }) => {
   const [userProfileIsShown, setUserProfileIsShown] = useState(false);
 
   const showUserProfileHandler = () => {
@@ -19,7 +19,7 @@ const Layout: React.FC<React.ReactNode> = (props) => {
     <Fragment>
       {userProfileIsShown && <UserProfile onClose={hideUserProfileHandler} />}
       <MainNavigation onShowUserProfile={showUserProfileHandler} />
-      <main className={classes.main}>{props.children}</main>
+      <main className={classes.main}>{children}</main>
     </Fragment>
   );
 };

@@ -25,8 +25,8 @@ export interface Post {
   createdAt: Date;
   updatedAt: Date;
   author: User;
-  post_likes?: PostLikes[];
-  comments?: PostComments[];
+  post_likes: number;
+  comments: number;
 }
 
 export interface PostPaginated {
