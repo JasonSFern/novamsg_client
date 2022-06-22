@@ -25,8 +25,8 @@ export interface Post {
   createdAt: Date;
   updatedAt: Date;
   author: User;
-  post_likes?: PostLikes[];
-  comments?: PostComments[];
+  post_likes: number;
+  comments: number;
 }
 
 export interface PostPaginated {
@@ -38,4 +38,9 @@ export interface PostPaginateInput {
   limit: number;
   offset: number;
   order: string;
+}
+
+export interface CreatePostInput {
+  user_id: number;
+  content: string;
 }

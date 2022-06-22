@@ -7,6 +7,7 @@ import {
   UserSession,
 } from '../interfaces/user.interface';
 import { PostPaginated, PostPaginateInput } from '../interfaces/post.interface';
+import { ContentInput, ContentOutput } from '../interfaces/content.interface';
 
 const DOMAIN = process.env.REACT_APP_DOMAIN;
 
@@ -40,6 +41,7 @@ export const login = async (payload: LoginInput): Promise<UserSession> => {
   return await response.data;
 };
 
+// Change the users current password
 export const changeUserPass = async (
   payload: PasswordChangeInput
 ): Promise<User> => {
@@ -63,6 +65,24 @@ export const getAllPosts = async (
   const response = await axios({
     method: 'POST',
     url: `${DOMAIN}/post/all-posts`,
+    data: payload,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  console.log(response);
+
+  return await response.data;
+};
+
+// Create a new post or comment
+export const createContent = async (
+  params: ContentInput
+): Promise<ContentOutput> => {
+  const payload = params.payload;
+  const response = await axios({
+    method: 'POST',
+    url: `${DOMAIN}/${params.type}/`,
     data: payload,
     headers: {
       'Content-Type': 'application/json',

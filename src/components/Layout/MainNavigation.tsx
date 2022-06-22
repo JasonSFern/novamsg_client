@@ -1,24 +1,44 @@
-import Button from '../UI/Button/Button';
+import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import classes from './MainNavigation.module.css';
+import Button from '../UI/Button/Button';
 
 import AddIcon from '../UI/Icon/AddIcon';
 import AccountIcon from '../UI/Icon/AccountIcon';
 import FeedIcon from '../UI/Icon/FeedIcon';
 import MyPostsIcon from '../UI/Icon/MyPostsIcon';
 
+import AuthContext from '../../context/auth-context';
+
+import classes from './MainNavigation.module.css';
+
 interface MainNavigationProps {
   onShowUserProfile: () => void;
 }
 
 const MainHeader: React.FC<MainNavigationProps> = ({ onShowUserProfile }) => {
+  const navigate = useNavigate();
+  const authCtx = useContext(AuthContext);
+
+  const newPostHandler = () => {
+    navigate('/new-post', { replace: true });
+  };
+
+  const allPostsHandler = () => {
+    navigate('/posts', { replace: true });
+  };
+
   return (
     <header className={classes.header}>
       <div>
         <nav className={classes.nav}>
           <ul>
             <li>
-              <Button displaystyle="button_icon" title="All Posts">
+              <Button
+                displaystyle="button_icon"
+                title="All Posts"
+                onClick={allPostsHandler}
+              >
                 <span className={classes.icon}>
                   <FeedIcon />
                 </span>
@@ -54,7 +74,11 @@ const MainHeader: React.FC<MainNavigationProps> = ({ onShowUserProfile }) => {
               </Button>
             </li>
             <li>
-              <Button displaystyle="button_icon" title="New Post">
+              <Button
+                displaystyle="button_icon"
+                title="New Post"
+                onClick={newPostHandler}
+              >
                 <span className={classes.icon}>
                   <AddIcon />
                 </span>

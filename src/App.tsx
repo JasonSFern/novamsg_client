@@ -5,6 +5,7 @@ import Layout from './components/Layout/Layout';
 import LoadingSpinner from './components/UI/LoadingSpinner/LoadingSpinner';
 
 const AllPosts = React.lazy(() => import('./pages/AllPosts'));
+const NewPost = React.lazy(() => import('./pages/NewPost'));
 
 function App() {
   const fallback = () => {
@@ -21,6 +22,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Navigate to="/posts" />} />
           <Route path="/posts" element={<AllPosts />} />
+          <Route path="/new-post" element={<NewPost />} />
         </Routes>
       </Suspense>
     </Layout>
