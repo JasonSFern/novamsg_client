@@ -1,10 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import {
-  calculateRemainingTime,
-  retrieveStoredToken,
-} from '../utils/auth-util';
+import React, { useState, useCallback } from 'react';
+import { retrieveStoredToken } from '../utils/auth-util';
 
-import { User } from '../interfaces/user.interface';
+import { Session, User } from '../interfaces/user.interface';
 
 interface AuthContextAttributes {
   isLoggedIn: boolean;
@@ -12,16 +9,16 @@ interface AuthContextAttributes {
   userData?: User | null;
   login: (t: string, u: User, e: number) => void;
   logout: () => void;
+  renewSession: (s: Session) => void;
 }
-
-let logoutTimer: ReturnType<typeof setTimeout> = setTimeout(() => {});
 
 const AuthContext = React.createContext<AuthContextAttributes>({
   isLoggedIn: false,
   token: undefined,
   userData: undefined,
-  login: (token: string, userData: User, expirationTime: number) => {},
+  login: (t: string, u: User, e: number) => {},
   logout: () => {},
+  renewSession: (s: Session) => {},
 });
 
 export const AuthContextProvider: React.FC = ({ children }) => {
@@ -41,10 +38,6 @@ export const AuthContextProvider: React.FC = ({ children }) => {
     localStorage.removeItem('token');
     localStorage.removeItem('userData');
     localStorage.removeItem('duration');
-
-    if (logoutTimer) {
-      clearTimeout(logoutTimer);
-    }
   }, []);
 
   const loginHandler = (
@@ -58,19 +51,12 @@ export const AuthContextProvider: React.FC = ({ children }) => {
     localStorage.setItem('token', token);
     localStorage.setItem('userData', JSON.stringify(userData));
     localStorage.setItem('duration', expirationTime.toString());
-
-    const remainingTime = calculateRemainingTime(expirationTime);
-
-    logoutTimer = setTimeout(logoutHandler, remainingTime);
   };
 
-  useEffect(() => {
-    if (tokenData && tokenData.duration !== 0) {
-      const remainingTime = calculateRemainingTime(tokenData.duration);
-
-      logoutTimer = setTimeout(logoutHandler, remainingTime);
-    }
-  }, [tokenData, logoutHandler]);
+  const renewSessionHandler = (session: Session) => {
+    setDuration(session.expires);
+    localStorage.setItem('duration', session.expires.toString());
+  };
 
   const contextValue = {
     token: token,
@@ -78,6 +64,7 @@ export const AuthContextProvider: React.FC = ({ children }) => {
     userData: userData,
     login: loginHandler,
     logout: logoutHandler,
+    renewSession: renewSessionHandler,
   };
 
   return (

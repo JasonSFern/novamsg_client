@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 import Button from '../UI/Button/Button';
-import classes from './NoPostsFound.module.css';
 
 const NoPostsFound = () => {
   const navigate = useNavigate();
@@ -9,7 +8,7 @@ const NoPostsFound = () => {
   };
 
   return (
-    <div className={classes.noposts}>
+    <div className="centered error-msg">
       <p>No posts found!</p>
       <Button
         displaystyle="button_std"

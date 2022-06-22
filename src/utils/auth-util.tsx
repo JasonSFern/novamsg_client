@@ -6,14 +6,6 @@ interface StoredToken {
   duration: number | undefined;
 }
 
-export const calculateRemainingTime = (expirationTime: number = 0): number => {
-  const currentTime = new Date().getTime();
-  const adjExpirationTime = new Date(expirationTime).getTime();
-
-  const remainingDuration = adjExpirationTime - currentTime;
-  return remainingDuration;
-};
-
 export const retrieveStoredToken = (): StoredToken => {
   let storedToken: string | null = null,
     storedUserData: string | null = null,

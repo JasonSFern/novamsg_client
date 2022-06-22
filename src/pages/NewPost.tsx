@@ -10,7 +10,7 @@ import {
   ContentType,
 } from '../interfaces/content.interface';
 
-const NewPost = () => {
+const NewPost: React.FC = () => {
   const { sendRequest, status } = useAxios<ContentInput, ContentOutput>(
     createContent
   );
