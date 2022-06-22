@@ -42,6 +42,8 @@ const PostList: React.FC<PostListProps> = ({
               author={quote.author}
               timestamp={quote.updatedAt}
               content={quote.content}
+              comments={quote.comments}
+              likes={quote.post_likes}
             />
           </li>
         ))}

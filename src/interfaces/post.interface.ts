@@ -39,3 +39,8 @@ export interface PostPaginateInput {
   offset: number;
   order: string;
 }
+
+export interface CreatePostInput {
+  user_id: number;
+  content: string;
+}
