@@ -92,3 +92,18 @@ export const createContent = async (
 
   return await response.data;
 };
+
+// Verify the user session token is still valid for portected routes
+export async function userAuthenticated(token = '') {
+  const response = await axios({
+    method: 'POST',
+    url: `${DOMAIN}/user/verify-token`,
+    headers: {
+      'Content-Type': 'application/json',
+      'x-jwt-token': token,
+    },
+  });
+  console.log(response);
+
+  return await response.data;
+}

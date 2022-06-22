@@ -44,13 +44,15 @@ const MainHeader: React.FC<MainNavigationProps> = ({ onShowUserProfile }) => {
                 </span>
               </Button>
             </li>
-            <li>
-              <Button displaystyle="button_icon" title="My Posts">
-                <div className={classes.icon}>
-                  <MyPostsIcon />
-                </div>
-              </Button>
-            </li>
+            {authCtx.isLoggedIn && (
+              <li>
+                <Button displaystyle="button_icon" title="My Posts">
+                  <div className={classes.icon}>
+                    <MyPostsIcon />
+                  </div>
+                </Button>
+              </li>
+            )}
           </ul>
         </nav>
       </div>
@@ -73,17 +75,19 @@ const MainHeader: React.FC<MainNavigationProps> = ({ onShowUserProfile }) => {
                 </span>
               </Button>
             </li>
-            <li>
-              <Button
-                displaystyle="button_icon"
-                title="New Post"
-                onClick={newPostHandler}
-              >
-                <span className={classes.icon}>
-                  <AddIcon />
-                </span>
-              </Button>
-            </li>
+            {authCtx.isLoggedIn && (
+              <li>
+                <Button
+                  displaystyle="button_icon"
+                  title="New Post"
+                  onClick={newPostHandler}
+                >
+                  <span className={classes.icon}>
+                    <AddIcon />
+                  </span>
+                </Button>
+              </li>
+            )}
           </ul>
         </nav>
       </div>
