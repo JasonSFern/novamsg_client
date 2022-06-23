@@ -60,6 +60,7 @@ const PostList: React.FC<PostListProps> = ({
           <li key={quote.id}>
             <PostItem
               key={quote.id}
+              id={quote.id}
               author={quote.author}
               timestamp={quote.updatedAt}
               content={quote.content}
