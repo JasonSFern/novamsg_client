@@ -14,10 +14,11 @@ import { PasswordChangeInput, User } from '../../interfaces/user.interface';
 const ProfileForm: React.FC = () => {
   const authCtx = useContext(AuthContext);
 
-  const [showStatusMessage, setShowStatusMessage] = useState(false);
-  const [statusMessageType, setStatusMessageType] = useState('success');
-  const [statusMessage, setStatusMessage] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [showStatusMessage, setShowStatusMessage] = useState<boolean>(false);
+  const [statusMessageType, setStatusMessageType] = useState<string>('success');
+  const [statusMessage, setStatusMessage] = useState<string>('');
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { sendRequest, status, data, error } = useAxios<
     PasswordChangeInput,

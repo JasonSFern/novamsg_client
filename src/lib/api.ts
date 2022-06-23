@@ -111,7 +111,9 @@ export const createContent = async (
 };
 
 // Verify the user session token is still valid for portected routes
-export async function userAuthenticated(token = '') {
+export async function userAuthenticated(
+  token: string = ''
+): Promise<UserSession> {
   const response = await axios({
     method: 'POST',
     url: `${DOMAIN}/user/verify-token`,

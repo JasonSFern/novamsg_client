@@ -1,4 +1,5 @@
 import { useEffect, useContext, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import useAxios from '../hooks/use-axios';
 import { getUserPosts } from '../lib/api';
@@ -16,7 +17,9 @@ const UserPosts: React.FC = () => {
   const [selectedPage, setSelectedPage] = useState<number>(0);
   const [totalPages, setTotalPages] = useState<number>(1);
 
-  const orderData = 'desc';
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const orderData = queryParams.get('sort') ? queryParams.get('sort') : 'desc';
 
   const authCtx = useContext(AuthContext);
   const user_id = authCtx.userData?.id;
@@ -55,7 +58,7 @@ const UserPosts: React.FC = () => {
   };
 
   const refreshPageHandler = () => {
-    if (typeof orderData === 'string')
+    if (typeof orderData === 'string' && user_id)
       sendRequest({ offset: 0, limit: listLimit, order: orderData });
   };
 

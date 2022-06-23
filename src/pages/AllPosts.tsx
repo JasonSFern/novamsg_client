@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import useAxios from '../hooks/use-axios';
 import { getAllPosts } from '../lib/api';
@@ -14,7 +15,9 @@ const AllPosts: React.FC = () => {
   const [selectedPage, setSelectedPage] = useState<number>(0);
   const [totalPages, setTotalPages] = useState<number>(1);
 
-  const orderData = 'desc';
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const orderData = queryParams.get('sort') ? queryParams.get('sort') : 'desc';
 
   const { sendRequest, status, data, error } = useAxios<
     PostPaginateInput,
