@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useContext, useState } from 'react';
 
 import useAxios from '../hooks/use-axios';
-import { getAllPosts } from '../lib/api';
+import { getUserPosts } from '../lib/api';
 
 import { PostPaginated, PostPaginateInput } from '../interfaces/post.interface';
 
@@ -9,21 +9,31 @@ import PostList from '../components/Posts/PostList';
 import LoadingSpinner from '../components/UI/LoadingSpinner/LoadingSpinner';
 import NoPostsFound from '../components/Posts/NoPostsFound';
 
-const AllPosts: React.FC = () => {
+import AuthContext from '../context/auth-context';
+
+const UserPosts: React.FC = () => {
   const listLimit = 5;
   const [selectedPage, setSelectedPage] = useState<number>(0);
   const [totalPages, setTotalPages] = useState<number>(1);
 
   const orderData = 'desc';
 
+  const authCtx = useContext(AuthContext);
+  const user_id = authCtx.userData?.id;
+
   const { sendRequest, status, data, error } = useAxios<
     PostPaginateInput,
     PostPaginated
-  >(getAllPosts, true);
+  >(getUserPosts, true);
 
   useEffect(() => {
-    if (typeof orderData === 'string')
-      sendRequest({ offset: 0, limit: listLimit, order: orderData });
+    if (typeof orderData === 'string' && user_id)
+      sendRequest({
+        offset: 0,
+        limit: listLimit,
+        order: orderData,
+        user_id: user_id,
+      });
   }, [sendRequest, orderData]);
 
   useEffect(() => {
@@ -35,8 +45,13 @@ const AllPosts: React.FC = () => {
   const changePageHandler = (page: number, offset: number) => {
     setSelectedPage(page);
 
-    if (typeof orderData === 'string')
-      sendRequest({ offset: offset, limit: listLimit, order: orderData });
+    if (typeof orderData === 'string' && user_id)
+      sendRequest({
+        offset: offset,
+        limit: listLimit,
+        order: orderData,
+        user_id: user_id,
+      });
   };
 
   const refreshPageHandler = () => {
@@ -68,4 +83,4 @@ const AllPosts: React.FC = () => {
   );
 };
 
-export default AllPosts;
+export default UserPosts;

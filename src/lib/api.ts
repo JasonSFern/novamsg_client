@@ -75,6 +75,23 @@ export const getAllPosts = async (
   return await response.data;
 };
 
+// Get posts with pagination for a specific user
+export const getUserPosts = async (
+  payload: PostPaginateInput
+): Promise<PostPaginated> => {
+  const response = await axios({
+    method: 'POST',
+    url: `${DOMAIN}/post/user-posts`,
+    data: payload,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  console.log(response);
+
+  return await response.data;
+};
+
 // Create a new post or comment
 export const createContent = async (
   params: ContentInput

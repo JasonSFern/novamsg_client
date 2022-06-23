@@ -24,6 +24,10 @@ const MainHeader: React.FC<MainNavigationProps> = ({ onShowUserProfile }) => {
     navigate('/new-post', { replace: true });
   };
 
+  const userPostsHandler = () => {
+    navigate('/user-posts', { replace: true });
+  };
+
   const allPostsHandler = () => {
     navigate('/posts', { replace: true });
   };
@@ -46,7 +50,11 @@ const MainHeader: React.FC<MainNavigationProps> = ({ onShowUserProfile }) => {
             </li>
             {authCtx.isLoggedIn && (
               <li>
-                <Button displaystyle="button_icon" title="My Posts">
+                <Button
+                  displaystyle="button_icon"
+                  title="User Posts"
+                  onClick={userPostsHandler}
+                >
                   <div className={classes.icon}>
                     <MyPostsIcon />
                   </div>
