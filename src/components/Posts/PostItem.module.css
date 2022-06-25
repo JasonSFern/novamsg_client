@@ -2,3 +2,33 @@
   margin: 0;
   padding: 1rem;
 }
+
+.content {
+  display: block;
+}
+
+.content h2 {
+  margin: 0;
+  margin-bottom: 1rem;
+  text-align: left;
+  font-size: 1rem;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer p {
+  font-style: italic;
+}
+
+.actions {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.icon {
+  font-size: 15px;
+  color: black;
+}

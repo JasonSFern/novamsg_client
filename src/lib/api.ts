@@ -194,6 +194,20 @@ export const getPostComments = async (postId: string): Promise<Comment> => {
   return await response.data;
 };
 
+// Get a single comment by id
+export const getSingleComment = async (commentId: string): Promise<Comment> => {
+  const response = await axios({
+    method: 'GET',
+    url: `${DOMAIN}/comment/${commentId}`,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  console.log(response);
+
+  return await response.data;
+};
+
 // Create a new comment under a post
 export const addComment = async (payload: CommentInput): Promise<Comment> => {
   const response = await axios({

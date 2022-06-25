@@ -13,6 +13,7 @@ const UserPosts = React.lazy(() => import('./pages/UserPosts'));
 const NewPost = React.lazy(() => import('./pages/NewPost'));
 const ViewPost = React.lazy(() => import('./pages/ViewPost'));
 const EditPost = React.lazy(() => import('./pages/EditPost'));
+const EditComment = React.lazy(() => import('./pages/EditComment'));
 const AccessDenied = React.lazy(() => import('./pages/AccessDenied'));
 const NotFound = React.lazy(() => import('./pages/NotFound'));
 
@@ -40,6 +41,9 @@ function App() {
           </Route>
           <Route path="/edit-post/:postId" element={<ProtectedRoute />}>
             <Route index element={<EditPost />} />
+          </Route>
+          <Route path="/edit-comment/:commentId" element={<ProtectedRoute />}>
+            <Route index element={<EditComment />} />
           </Route>
           <Route path="/access-denied" element={<AccessDenied />} />
           <Route path="*" element={<NotFound />} />

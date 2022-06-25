@@ -1,7 +1,7 @@
 import { Fragment, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-import { Post } from '../interfaces/post.interface';
+import { Comment } from '../interfaces/comment.interface';
 import {
   ContentOutput,
   ContentInput,
@@ -13,20 +13,20 @@ import Form from '../components/Form/Form';
 import LoadingSpinner from '../components/UI/LoadingSpinner/LoadingSpinner';
 
 import useAxios from '../hooks/use-axios';
-import { getSinglePost, editContent } from '../lib/api';
+import { getSingleComment, editContent } from '../lib/api';
 
-const EditPost = () => {
+const EditComment = () => {
   const navigate = useNavigate();
 
   const params = useParams();
-  const { postId } = params;
+  const { commentId } = params;
 
   const {
     sendRequest: sendRequestG,
     status: statusG,
-    data: loadedPostG,
+    data: loadedCommentG,
     error: errorG,
-  } = useAxios<string, Post>(getSinglePost, true);
+  } = useAxios<string, Comment>(getSingleComment, true);
 
   const {
     sendRequest: sendRequestE,
@@ -36,46 +36,46 @@ const EditPost = () => {
   } = useAxios<ContentInput, ContentOutput>(editContent);
 
   useEffect(() => {
-    if (postId) sendRequestG(postId);
-  }, [sendRequestG, postId]);
+    if (commentId) sendRequestG(commentId);
+  }, [sendRequestG, commentId]);
 
   useEffect(() => {
     if (statusE == 'completed') {
-      navigate('/posts');
+      navigate(`/posts/${loadedCommentG?.post_id}`);
     }
   }, [statusE, navigate]);
 
-  const editPostHandler = (
+  const editCommentHandler = (
     id: number,
     type: ContentType,
-    postData: ContentPayload
+    commentData: ContentPayload
   ) => {
     sendRequestE({
       id: id,
       type: type,
-      payload: postData,
+      payload: commentData,
     });
   };
 
   return (
     <Fragment>
       {errorG && <p className="centered focused">{errorG}</p>}
-      {!loadedPostG?.content && <p>No post found</p>}
+      {!loadedCommentG?.content && <p>No post found</p>}
       {statusG === 'pending' && (
         <div className="centered">
           <LoadingSpinner />
         </div>
       )}
-      {loadedPostG?.content && (
+      {loadedCommentG?.content && (
         <Form
           isLoading={statusG === 'pending'}
-          onEdit={editPostHandler}
-          edit={loadedPostG}
-          type="post"
+          onEdit={editCommentHandler}
+          edit={loadedCommentG}
+          type="comment"
         />
       )}
     </Fragment>
   );
 };
 
-export default EditPost;
+export default EditComment;

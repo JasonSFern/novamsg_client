@@ -1,4 +1,5 @@
-import React from 'react';
+import { Fragment, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { User } from '../../interfaces/user.interface';
 
@@ -9,6 +10,8 @@ import DeleteIcon from '../UI/Icon/DeleteIcon';
 import LikeIcon from '../UI/Icon/LikeIcon';
 
 import classes from './CommentItem.module.css';
+
+import AuthContext from '../../context/auth-context';
 
 interface CommentItemProps {
   id: number;
@@ -24,6 +27,15 @@ const CommentItem: React.FC<CommentItemProps> = ({
   author,
   timestamp,
 }) => {
+  const navigate = useNavigate();
+  const authCtx = useContext(AuthContext);
+  const userID =
+    authCtx.userData && authCtx.userData.id ? authCtx.userData.id : null;
+
+  const editCommentHandler = () => {
+    navigate(`/edit-comment/${id}`, { replace: true });
+  };
+
   return (
     <li className={classes.item}>
       <Card>
@@ -36,16 +48,24 @@ const CommentItem: React.FC<CommentItemProps> = ({
               {author.username} : {timestamp}
             </p>
             <div className={classes.actions}>
-              <Button title="Edit Comment" displaystyle="button_icon">
-                <span className={classes.icon}>
-                  <EditIcon />
-                </span>
-              </Button>
-              <Button title="Delete Comment" displaystyle="button_icon">
-                <span className={classes.icon}>
-                  <DeleteIcon />
-                </span>
-              </Button>
+              {userID && userID === author.id && (
+                <Fragment>
+                  <Button
+                    title="Edit Comment"
+                    onClick={editCommentHandler}
+                    displaystyle="button_icon"
+                  >
+                    <span className={classes.icon}>
+                      <EditIcon />
+                    </span>
+                  </Button>
+                  <Button title="Delete Comment" displaystyle="button_icon">
+                    <span className={classes.icon}>
+                      <DeleteIcon />
+                    </span>
+                  </Button>
+                </Fragment>
+              )}
               <Button title="Like Comment" displaystyle="button_icon">
                 <span className={classes.icon}>
                   <LikeIcon /> ({1})
