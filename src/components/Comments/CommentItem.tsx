@@ -3,6 +3,10 @@ import React from 'react';
 import { User } from '../../interfaces/user.interface';
 
 import Card from '../UI/Card/Card';
+import Button from '../UI/Button/Button';
+import EditIcon from '../UI/Icon/EditIcon';
+import DeleteIcon from '../UI/Icon/DeleteIcon';
+import LikeIcon from '../UI/Icon/LikeIcon';
 
 import classes from './CommentItem.module.css';
 
@@ -31,6 +35,23 @@ const CommentItem: React.FC<CommentItemProps> = ({
             <p>
               {author.username} : {timestamp}
             </p>
+            <div className={classes.actions}>
+              <Button title="Edit Comment" displaystyle="button_icon">
+                <span className={classes.icon}>
+                  <EditIcon />
+                </span>
+              </Button>
+              <Button title="Delete Comment" displaystyle="button_icon">
+                <span className={classes.icon}>
+                  <DeleteIcon />
+                </span>
+              </Button>
+              <Button title="Like Comment" displaystyle="button_icon">
+                <span className={classes.icon}>
+                  <LikeIcon /> ({1})
+                </span>
+              </Button>
+            </div>
           </div>
         </div>
       </Card>

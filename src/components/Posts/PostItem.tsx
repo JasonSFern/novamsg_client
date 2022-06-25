@@ -6,6 +6,10 @@ import { DeletePostOutput } from '../../interfaces/post.interface';
 
 import Card from '../UI/Card/Card';
 import Button from '../UI/Button/Button';
+import CommentIcon from '../UI/Icon/CommentIcon';
+import EditIcon from '../UI/Icon/EditIcon';
+import DeleteIcon from '../UI/Icon/DeleteIcon';
+import LikeIcon from '../UI/Icon/LikeIcon';
 
 import classes from './PostItem.module.css';
 
@@ -79,14 +83,18 @@ const PostItem: React.FC<PostItemProps> = ({
                   onClick={editPostHandler}
                   displaystyle="button_icon"
                 >
-                  <span className={classes.icon}>Edit</span>
+                  <span className={classes.icon}>
+                    <EditIcon />
+                  </span>
                 </Button>
                 <Button
                   title="Delete"
                   onClick={deletePostHandler}
                   displaystyle="button_icon"
                 >
-                  <span className={classes.icon}>Delete</span>
+                  <span className={classes.icon}>
+                    <DeleteIcon />
+                  </span>
                 </Button>
               </Fragment>
             )}
@@ -95,10 +103,15 @@ const PostItem: React.FC<PostItemProps> = ({
               displaystyle="button_icon"
               onClick={viewPostHandler}
             >
-              Comment
+              <span className={classes.icon}>
+                <CommentIcon /> ({comments})
+              </span>
             </Button>
-            <span className={classes.icon}>({comments})</span>
-            <span className={classes.icon}>({likes})</span>
+            <Button title="Like Post" displaystyle="button_icon">
+              <span className={classes.icon}>
+                <LikeIcon /> ({likes})
+              </span>
+            </Button>
           </div>
         </div>
       </div>
