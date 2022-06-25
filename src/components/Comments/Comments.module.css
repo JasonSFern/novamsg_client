@@ -1,0 +1,13 @@
+.comments {
+  text-align: center;
+}
+
+.comments h1 {
+  text-align: center;
+  color: white;
+}
+
+.actions {
+  display: flex;
+  flex-direction: row-reverse;
+}
