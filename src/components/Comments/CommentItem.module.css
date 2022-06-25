@@ -1,0 +1,28 @@
+.post {
+  margin: 0;
+  padding: 1rem;
+}
+
+.content {
+  display: block;
+}
+
+.content h2 {
+  margin: 0;
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.actions {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.icon {
+  font-size: 15px;
+}

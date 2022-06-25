@@ -12,6 +12,7 @@ import {
   PostPaginateInput,
 } from '../interfaces/post.interface';
 import { ContentInput, ContentOutput } from '../interfaces/content.interface';
+import { Comment, CommentInput } from '../interfaces/comment.interface';
 
 const DOMAIN = process.env.REACT_APP_DOMAIN;
 
@@ -129,9 +130,9 @@ export const createContent = async (
 };
 
 // Verify the user session token is still valid for portected routes
-export async function userAuthenticated(
+export const userAuthenticated = async (
   token: string = ''
-): Promise<UserSession> {
+): Promise<UserSession> => {
   const response = await axios({
     method: 'POST',
     url: `${DOMAIN}/user/verify-token`,
@@ -143,4 +144,34 @@ export async function userAuthenticated(
   console.log(response);
 
   return await response.data;
-}
+};
+
+// Get comments for a post
+export const getPostComments = async (postId: string): Promise<Comment> => {
+  const response = await axios({
+    method: 'POST',
+    url: `${DOMAIN}/comment/post-comments`,
+    data: { post_id: postId },
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  console.log(response);
+
+  return await response.data;
+};
+
+// Create a new comment under a post
+export const addComment = async (payload: CommentInput): Promise<Comment> => {
+  const response = await axios({
+    method: 'POST',
+    url: `${DOMAIN}/comment/`,
+    data: payload,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  console.log(response);
+
+  return await response.data;
+};
