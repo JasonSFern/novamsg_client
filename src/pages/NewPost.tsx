@@ -7,6 +7,7 @@ import { createContent } from '../lib/api';
 import {
   ContentInput,
   ContentOutput,
+  ContentPayload,
   ContentType,
 } from '../interfaces/content.interface';
 
@@ -22,10 +23,7 @@ const NewPost: React.FC = () => {
     }
   }, [status, navigate]);
 
-  const addHandler = (
-    type: ContentType,
-    postData: { user_id: number; content: string }
-  ) => {
+  const addHandler = (type: ContentType, postData: ContentPayload) => {
     const obj = {
       type: type,
       payload: postData,

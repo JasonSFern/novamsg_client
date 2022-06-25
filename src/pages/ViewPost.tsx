@@ -1,10 +1,11 @@
 import { Fragment, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-import PostItem from '../components/Posts/PostItem';
-import LoadingSpinner from '../components/UI/LoadingSpinner/LoadingSpinner';
-
 import { Post } from '../interfaces/post.interface';
+
+import PostItem from '../components/Posts/PostItem';
+import Comments from '../components/Comments/Comments';
+import LoadingSpinner from '../components/UI/LoadingSpinner/LoadingSpinner';
 
 import useAxios from '../hooks/use-axios';
 import { getSinglePost } from '../lib/api';
@@ -45,6 +46,7 @@ const PostDetail = () => {
           likes={loadedPost?.post_likes}
         />
       )}
+      <Comments />
     </Fragment>
   );
 };

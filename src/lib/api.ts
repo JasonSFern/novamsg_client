@@ -111,6 +111,24 @@ export const getSinglePost = async (postId: string): Promise<Post> => {
   return await response.data;
 };
 
+// Edit a post or comment
+export const editContent = async (
+  params: ContentInput
+): Promise<ContentOutput> => {
+  const payload = params.payload;
+  const response = await axios({
+    method: 'PUT',
+    url: `${DOMAIN}/${params.type}/${params.id}`,
+    data: payload,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  console.log(response);
+
+  return await response.data;
+};
+
 // Create a new post or comment
 export const createContent = async (
   params: ContentInput

@@ -1,4 +1,4 @@
-import { Fragment, createRef, useState, useContext } from 'react';
+import { Fragment, useState, useContext, createRef } from 'react';
 
 import Card from '../UI/Card/Card';
 import LoadingSpinner from '../UI/LoadingSpinner/LoadingSpinner';
@@ -6,7 +6,10 @@ import classes from './Form.module.css';
 
 import AuthContext from '../../context/auth-context';
 import Button from '../UI/Button/Button';
-import { ContentType } from '../../interfaces/content.interface';
+import {
+  ContentPayload,
+  ContentType,
+} from '../../interfaces/content.interface';
 
 interface PostFormProps {
   isLoading: boolean;
@@ -15,12 +18,8 @@ interface PostFormProps {
     id: number;
     content: string;
   };
-  onEdit?: (
-    i: number,
-    t: string,
-    o: { user_id: number; content: string }
-  ) => void;
-  onAdd?: (t: ContentType, o: { user_id: number; content: string }) => void;
+  onEdit?: (i: number, t: ContentType, o: ContentPayload) => void;
+  onAdd?: (t: ContentType, o: ContentPayload) => void;
 }
 
 const PostForm: React.FC<PostFormProps> = ({
@@ -42,6 +41,7 @@ const PostForm: React.FC<PostFormProps> = ({
     console.log('hello');
 
     const enteredContent = contentInputRef.current?.value;
+
     const user_id = authCtx.userData?.id;
 
     if (enteredContent && user_id) {
@@ -82,7 +82,6 @@ const PostForm: React.FC<PostFormProps> = ({
               <LoadingSpinner />
             </div>
           )}
-
           <div className={classes.control}>
             <textarea
               id="content"

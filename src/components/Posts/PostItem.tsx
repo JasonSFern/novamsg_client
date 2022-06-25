@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { User } from '../../interfaces/user.interface';
@@ -6,6 +7,8 @@ import Card from '../UI/Card/Card';
 import Button from '../UI/Button/Button';
 
 import classes from './PostItem.module.css';
+
+import AuthContext from '../../context/auth-context';
 
 interface PostItemProps {
   id: number;
@@ -25,9 +28,16 @@ const PostItem: React.FC<PostItemProps> = ({
   likes,
 }) => {
   const navigate = useNavigate();
+  const authCtx = useContext(AuthContext);
+  const userID =
+    authCtx.userData && authCtx.userData.id ? authCtx.userData.id : null;
 
   const viewPostHandler = () => {
     navigate(`/posts/${id}`, { replace: true });
+  };
+
+  const editPostHandler = () => {
+    navigate(`/edit-post/${id}`, { replace: true });
   };
 
   return (
@@ -41,6 +51,16 @@ const PostItem: React.FC<PostItemProps> = ({
             {author.username} : {timestamp}
           </p>
           <div className={classes.actions}>
+            {userID && userID === author.id && (
+              // <Fragment>
+              <Button
+                title="Edit"
+                onClick={editPostHandler}
+                displaystyle="button_icon"
+              >
+                <span className={classes.icon}>Edit</span>
+              </Button>
+            )}
             <Button
               title="View Post"
               displaystyle="button_icon"
