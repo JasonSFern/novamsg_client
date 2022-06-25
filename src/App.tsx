@@ -9,7 +9,9 @@ const ProtectedRoute = React.lazy(
 );
 
 const AllPosts = React.lazy(() => import('./pages/AllPosts'));
+const UserPosts = React.lazy(() => import('./pages/UserPosts'));
 const NewPost = React.lazy(() => import('./pages/NewPost'));
+const ViewPost = React.lazy(() => import('./pages/ViewPost'));
 const AccessDenied = React.lazy(() => import('./pages/AccessDenied'));
 const NotFound = React.lazy(() => import('./pages/NotFound'));
 
@@ -28,6 +30,10 @@ function App() {
         <Routes>
           <Route path="/" element={<Navigate to="/posts" />} />
           <Route path="/posts" element={<AllPosts />} />
+          <Route path="/posts/:postId/*" element={<ViewPost />} />
+          <Route path="/user-posts" element={<ProtectedRoute />}>
+            <Route index element={<UserPosts />} />
+          </Route>
           <Route path="/new-post" element={<ProtectedRoute />}>
             <Route index element={<NewPost />} />
           </Route>

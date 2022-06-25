@@ -1,6 +1,8 @@
 import { useEffect, useContext } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 
+import { UserSession } from '../../interfaces/user.interface';
+
 import { userAuthenticated } from '../../lib/api';
 import useAxios from '../../hooks/use-axios';
 
@@ -10,7 +12,9 @@ import AuthContext from '../../context/auth-context';
 const ProtectedRoute: React.FC = ({ children }) => {
   const authCtx = useContext(AuthContext);
 
-  const { sendRequest, status, data, error } = useAxios(userAuthenticated);
+  const { sendRequest, status, data, error } = useAxios<string, UserSession>(
+    userAuthenticated
+  );
 
   useEffect(() => {
     if (authCtx.token) sendRequest(authCtx.token);

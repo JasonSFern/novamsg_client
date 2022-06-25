@@ -6,7 +6,11 @@ import {
   User,
   UserSession,
 } from '../interfaces/user.interface';
-import { PostPaginated, PostPaginateInput } from '../interfaces/post.interface';
+import {
+  Post,
+  PostPaginated,
+  PostPaginateInput,
+} from '../interfaces/post.interface';
 import { ContentInput, ContentOutput } from '../interfaces/content.interface';
 import { Comment, CommentInput } from '../interfaces/comment.interface';
 
@@ -67,6 +71,37 @@ export const getAllPosts = async (
     method: 'POST',
     url: `${DOMAIN}/post/all-posts`,
     data: payload,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  console.log(response);
+
+  return await response.data;
+};
+
+// Get posts with pagination for a specific user
+export const getUserPosts = async (
+  payload: PostPaginateInput
+): Promise<PostPaginated> => {
+  const response = await axios({
+    method: 'POST',
+    url: `${DOMAIN}/post/user-posts`,
+    data: payload,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  console.log(response);
+
+  return await response.data;
+};
+
+// Get a single post by id
+export const getSinglePost = async (postId: string): Promise<Post> => {
+  const response = await axios({
+    method: 'GET',
+    url: `${DOMAIN}/post/${postId}`,
     headers: {
       'Content-Type': 'application/json',
     },

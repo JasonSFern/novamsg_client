@@ -1,30 +1,34 @@
-import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { User } from '../../interfaces/user.interface';
 
 import Card from '../UI/Card/Card';
+import Button from '../UI/Button/Button';
 
 import classes from './PostItem.module.css';
 
-import AuthContext from '../../context/auth-context';
-
 interface PostItemProps {
+  id: number;
   content: string;
   author: User;
   timestamp: Date;
   comments: number;
   likes: number;
 }
+
 const PostItem: React.FC<PostItemProps> = ({
+  id,
   content,
   author,
   timestamp,
   comments,
   likes,
 }) => {
-  const authCtx = useContext(AuthContext);
-  const userID =
-    authCtx.userData && authCtx.userData.id ? authCtx.userData.id : null;
+  const navigate = useNavigate();
+
+  const viewPostHandler = () => {
+    navigate(`/posts/${id}`, { replace: true });
+  };
 
   return (
     <Card>
@@ -37,6 +41,13 @@ const PostItem: React.FC<PostItemProps> = ({
             {author.username} : {timestamp}
           </p>
           <div className={classes.actions}>
+            <Button
+              title="View Post"
+              displaystyle="button_icon"
+              onClick={viewPostHandler}
+            >
+              Comment
+            </Button>
             <span className={classes.icon}>({comments})</span>
             <span className={classes.icon}>({likes})</span>
           </div>
