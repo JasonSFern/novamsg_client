@@ -15,6 +15,7 @@ interface PostListProps {
   selectedpage: number;
   posts: Post[];
   onChangePage: (s: number, o: number) => void;
+  onRefresh: () => void;
 }
 
 const PostList: React.FC<PostListProps> = ({
@@ -23,6 +24,7 @@ const PostList: React.FC<PostListProps> = ({
   selectedpage,
   posts,
   onChangePage,
+  onRefresh,
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -56,16 +58,17 @@ const PostList: React.FC<PostListProps> = ({
         </Button>
       </div>
       <ul className={classes.list}>
-        {posts.map((quote) => (
-          <li key={quote.id}>
+        {posts.map((post) => (
+          <li key={post.id}>
             <PostItem
-              key={quote.id}
-              id={quote.id}
-              author={quote.author}
-              timestamp={quote.updatedAt}
-              content={quote.content}
-              comments={quote.comments}
-              likes={quote.post_likes}
+              key={post.id}
+              id={post.id}
+              author={post.author}
+              timestamp={post.updatedAt}
+              content={post.content}
+              comments={post.comments}
+              likes={post.post_likes}
+              refreshlist={onRefresh}
             />
           </li>
         ))}
