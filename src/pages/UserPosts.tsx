@@ -80,6 +80,7 @@ const UserPosts: React.FC = () => {
           totalpages={totalPages}
           posts={data?.rows}
           onChangePage={changePageHandler}
+          onRefresh={refreshPageHandler}
         ></PostList>
       )}
     </section>

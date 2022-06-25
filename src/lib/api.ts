@@ -7,6 +7,7 @@ import {
   UserSession,
 } from '../interfaces/user.interface';
 import {
+  DeletePostOutput,
   Post,
   PostPaginated,
   PostPaginateInput,
@@ -102,6 +103,38 @@ export const getSinglePost = async (postId: string): Promise<Post> => {
   const response = await axios({
     method: 'GET',
     url: `${DOMAIN}/post/${postId}`,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  console.log(response);
+
+  return await response.data;
+};
+
+// delete a post
+export const deletePost = async (postId: number): Promise<DeletePostOutput> => {
+  const response = await axios({
+    method: 'DELETE',
+    url: `${DOMAIN}/post/${postId}`,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  console.log(response);
+
+  return await response.data;
+};
+
+// Edit a post or comment
+export const editContent = async (
+  params: ContentInput
+): Promise<ContentOutput> => {
+  const payload = params.payload;
+  const response = await axios({
+    method: 'PUT',
+    url: `${DOMAIN}/${params.type}/${params.id}`,
+    data: payload,
     headers: {
       'Content-Type': 'application/json',
     },
