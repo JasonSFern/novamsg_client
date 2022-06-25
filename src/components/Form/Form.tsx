@@ -32,6 +32,8 @@ const PostForm: React.FC<PostFormProps> = ({
   const authCtx = useContext(AuthContext);
 
   const defaultValue = edit && edit.content ? edit.content : '';
+  const buttonLabel = onEdit ? 'Update' : 'Post';
+
   const contentInputRef = createRef<HTMLTextAreaElement>();
 
   const [isEntering, setIsEntering] = useState<boolean>(false);
@@ -97,7 +99,7 @@ const PostForm: React.FC<PostFormProps> = ({
               displaystyle="button_std"
               onClick={finishingEnteringHandler}
             >
-              Post
+              {buttonLabel}
             </Button>
           </div>
         </form>
