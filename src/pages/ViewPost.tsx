@@ -10,7 +10,7 @@ import LoadingSpinner from '../components/UI/LoadingSpinner/LoadingSpinner';
 import useAxios from '../hooks/use-axios';
 import { getSinglePost } from '../lib/api';
 
-const PostDetail = () => {
+const ViewPost = () => {
   const params = useParams();
   const { postId } = params;
 
@@ -51,4 +51,4 @@ const PostDetail = () => {
   );
 };
 
-export default PostDetail;
+export default ViewPost;

@@ -2,6 +2,7 @@ import { Fragment, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { User } from '../../interfaces/user.interface';
+import { DeleteContentOutput } from '../../interfaces/content.interface';
 
 import Card from '../UI/Card/Card';
 import Button from '../UI/Button/Button';
@@ -13,12 +14,16 @@ import classes from './CommentItem.module.css';
 
 import AuthContext from '../../context/auth-context';
 
+import useAxios from '../../hooks/use-axios';
+import { deleteComment } from '../../lib/api';
+
 interface CommentItemProps {
   id: number;
   content: string;
   author: User;
   timestamp: Date;
   edited: boolean;
+  refreshlist: () => void;
 }
 
 const CommentItem: React.FC<CommentItemProps> = ({
@@ -26,14 +31,27 @@ const CommentItem: React.FC<CommentItemProps> = ({
   content,
   author,
   timestamp,
+  refreshlist,
 }) => {
+  const { sendRequest: sendRequestCommentDelete, data: deleteData } = useAxios<
+    number,
+    DeleteContentOutput
+  >(deleteComment);
+
   const navigate = useNavigate();
   const authCtx = useContext(AuthContext);
   const userID =
     authCtx.userData && authCtx.userData.id ? authCtx.userData.id : null;
+  const disable_btn = false;
 
   const editCommentHandler = () => {
     navigate(`/edit-comment/${id}`, { replace: true });
+  };
+
+  const deleteCommentHandler = () => {
+    if (userID) {
+      sendRequestCommentDelete(id).then(refreshlist);
+    }
   };
 
   return (
@@ -59,14 +77,22 @@ const CommentItem: React.FC<CommentItemProps> = ({
                       <EditIcon />
                     </span>
                   </Button>
-                  <Button title="Delete Comment" displaystyle="button_icon">
+                  <Button
+                    title="Delete Comment"
+                    onClick={deleteCommentHandler}
+                    displaystyle="button_icon"
+                  >
                     <span className={classes.icon}>
                       <DeleteIcon />
                     </span>
                   </Button>
                 </Fragment>
               )}
-              <Button title="Like Comment" displaystyle="button_icon">
+              <Button
+                title="Like Comment"
+                disabled={disable_btn}
+                displaystyle="button_icon"
+              >
                 <span className={classes.icon}>
                   <LikeIcon /> ({1})
                 </span>

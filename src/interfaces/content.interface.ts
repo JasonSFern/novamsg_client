@@ -14,3 +14,7 @@ export interface ContentInput {
 }
 
 export type ContentOutput = Post | Comment;
+
+export interface DeleteContentOutput {
+  success: boolean;
+}

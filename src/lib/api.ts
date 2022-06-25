@@ -7,12 +7,15 @@ import {
   UserSession,
 } from '../interfaces/user.interface';
 import {
-  DeletePostOutput,
   Post,
   PostPaginated,
   PostPaginateInput,
 } from '../interfaces/post.interface';
-import { ContentInput, ContentOutput } from '../interfaces/content.interface';
+import {
+  ContentInput,
+  ContentOutput,
+  DeleteContentOutput,
+} from '../interfaces/content.interface';
 import { Comment, CommentInput } from '../interfaces/comment.interface';
 
 const DOMAIN = process.env.REACT_APP_DOMAIN;
@@ -113,7 +116,9 @@ export const getSinglePost = async (postId: string): Promise<Post> => {
 };
 
 // delete a post
-export const deletePost = async (postId: number): Promise<DeletePostOutput> => {
+export const deletePost = async (
+  postId: number
+): Promise<DeleteContentOutput> => {
   const response = await axios({
     method: 'DELETE',
     url: `${DOMAIN}/post/${postId}`,
@@ -214,6 +219,22 @@ export const addComment = async (payload: CommentInput): Promise<Comment> => {
     method: 'POST',
     url: `${DOMAIN}/comment/`,
     data: payload,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  console.log(response);
+
+  return await response.data;
+};
+
+// delete a comment
+export const deleteComment = async (
+  commentId: number
+): Promise<DeleteContentOutput> => {
+  const response = await axios({
+    method: 'DELETE',
+    url: `${DOMAIN}/comment/${commentId}`,
     headers: {
       'Content-Type': 'application/json',
     },
