@@ -45,7 +45,3 @@ export interface CreatePostInput {
   user_id: number;
   content: string;
 }
-
-export interface DeletePostOutput {
-  success: boolean;
-}

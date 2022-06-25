@@ -2,7 +2,7 @@ import { Fragment, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { User } from '../../interfaces/user.interface';
-import { DeletePostOutput } from '../../interfaces/post.interface';
+import { DeleteContentOutput } from '../../interfaces/content.interface';
 
 import Card from '../UI/Card/Card';
 import Button from '../UI/Button/Button';
@@ -39,30 +39,27 @@ const PostItem: React.FC<PostItemProps> = ({
 }) => {
   const { sendRequest: sendRequestPostDelete, data: deleteData } = useAxios<
     number,
-    DeletePostOutput
+    DeleteContentOutput
   >(deletePost);
 
   const navigate = useNavigate();
   const authCtx = useContext(AuthContext);
   const userID =
     authCtx.userData && authCtx.userData.id ? authCtx.userData.id : null;
-
-  if (deleteData?.success && refreshlist) {
-    refreshlist();
-  }
+  const disable_btn = false;
 
   const viewPostHandler = () => {
     navigate(`/posts/${id}`, { replace: true });
   };
 
-  const deletePostHandler = () => {
-    if (userID) {
-      sendRequestPostDelete(id);
-    }
-  };
-
   const editPostHandler = () => {
     navigate(`/edit-post/${id}`, { replace: true });
+  };
+
+  const deletePostHandler = () => {
+    if (userID) {
+      sendRequestPostDelete(id).then(refreshlist);
+    }
   };
 
   return (
@@ -79,7 +76,7 @@ const PostItem: React.FC<PostItemProps> = ({
             {userID && userID === author.id && (
               <Fragment>
                 <Button
-                  title="Edit"
+                  title="Edit Post"
                   onClick={editPostHandler}
                   displaystyle="button_icon"
                 >
@@ -88,7 +85,7 @@ const PostItem: React.FC<PostItemProps> = ({
                   </span>
                 </Button>
                 <Button
-                  title="Delete"
+                  title="Delete Post"
                   onClick={deletePostHandler}
                   displaystyle="button_icon"
                 >
@@ -107,7 +104,11 @@ const PostItem: React.FC<PostItemProps> = ({
                 <CommentIcon /> ({comments})
               </span>
             </Button>
-            <Button title="Like Post" displaystyle="button_icon">
+            <Button
+              title="Like Post"
+              disabled={disable_btn}
+              displaystyle="button_icon"
+            >
               <span className={classes.icon}>
                 <LikeIcon /> ({likes})
               </span>

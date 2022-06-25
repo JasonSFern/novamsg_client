@@ -18,6 +18,7 @@ const CommentsList: React.FC<CommentsListProps> = ({ comments, refresh }) => {
           timestamp={comment.updatedAt}
           edited={comment.createdAt !== comment.updatedAt}
           content={comment.content}
+          refreshlist={refresh}
         />
       ))}
     </ul>
