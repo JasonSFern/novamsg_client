@@ -7,10 +7,13 @@ import { userAuthenticated } from '../../lib/api';
 import useAxios from '../../hooks/use-axios';
 
 import AuthContext from '../../context/auth-context';
+import UserProfile from '../UserProfile/UserProfile';
 
 // @ts-ignore
 const ProtectedRoute: React.FC = ({ children }) => {
   const authCtx = useContext(AuthContext);
+
+  const hideUserProfileHandler = () => {};
 
   const { sendRequest, status, data, error } = useAxios<string, UserSession>(
     userAuthenticated
@@ -40,11 +43,11 @@ const ProtectedRoute: React.FC = ({ children }) => {
       if (!data.auth) {
         authCtx.logout();
 
-        return <Navigate to="/posts" replace />;
+        return <UserProfile onClose={hideUserProfileHandler} />;
       }
     }
   } else {
-    return <Navigate to="/posts" replace />;
+    return <UserProfile onClose={hideUserProfileHandler} />;
   }
 };
 

@@ -11,6 +11,7 @@ import MyPostsIcon from '../UI/Icon/MyPostsIcon';
 import AuthContext from '../../context/auth-context';
 
 import classes from './MainNavigation.module.css';
+import galaxyImage from '../../assets/galaxy_crop.png';
 
 interface MainNavigationProps {
   onShowUserProfile: () => void;
@@ -52,7 +53,7 @@ const MainHeader: React.FC<MainNavigationProps> = ({ onShowUserProfile }) => {
               <li>
                 <Button
                   displaystyle="button_icon"
-                  title="User Posts"
+                  title="My Posts"
                   onClick={userPostsHandler}
                 >
                   <div className={classes.icon}>
@@ -66,8 +67,11 @@ const MainHeader: React.FC<MainNavigationProps> = ({ onShowUserProfile }) => {
       </div>
       <div className={classes.title}>
         <div className={classes.centered}>
-          <p>NOVA.MSG</p>
+          <p>NOVA&nbsp;&nbsp;MSG</p>
         </div>
+        <a href="/">
+          <img src={galaxyImage} alt="" />
+        </a>
       </div>
       <div>
         <nav className={classes.nav}>
@@ -75,7 +79,7 @@ const MainHeader: React.FC<MainNavigationProps> = ({ onShowUserProfile }) => {
             <li>
               <Button
                 displaystyle="button_icon"
-                title="User Settings"
+                title="Account"
                 onClick={onShowUserProfile}
               >
                 <span className={classes.icon}>

@@ -5,7 +5,7 @@ import classes from './Layout.module.css';
 import UserProfile from '../UserProfile/UserProfile';
 
 const Layout: React.FC<React.ReactNode> = ({ children }) => {
-  const [userProfileIsShown, setUserProfileIsShown] = useState(false);
+  const [userProfileIsShown, setUserProfileIsShown] = useState<boolean>(false);
 
   const showUserProfileHandler = () => {
     setUserProfileIsShown(true);

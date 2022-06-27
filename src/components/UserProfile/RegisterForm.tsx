@@ -135,7 +135,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
                 </Button>
               </Fragment>
             )}
-            {isLoading && <p>Creating new user...</p>}
+            {isLoading && <p className="gen-message">Creating new user...</p>}
           </div>
         </form>
       )}

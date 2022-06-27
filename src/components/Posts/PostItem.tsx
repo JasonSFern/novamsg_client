@@ -1,4 +1,4 @@
-import { Fragment, useContext, useEffect, useState } from 'react';
+import { Fragment, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { User } from '../../interfaces/user.interface';
@@ -19,26 +19,33 @@ import AuthContext from '../../context/auth-context';
 import useAxios from '../../hooks/use-axios';
 import { togglePostLike, deletePost } from '../../lib/api';
 
-import { userLiked, itemCount } from '../../lib/content';
+import {
+  formattedDate,
+  userLiked,
+  itemCount,
+  itemEdited,
+} from '../../lib/content';
 
 interface PostItemProps {
   id: number;
   content: string;
   author: User;
   timestamp: Date;
+  edited: boolean;
   comments: number;
-  likes: PostLike[];
   refreshlist?: () => void;
+  show_comment_btn: boolean;
 }
 
 const PostItem: React.FC<PostItemProps> = ({
   id,
   content,
   author,
+  edited,
   timestamp,
   comments,
-  likes,
   refreshlist,
+  show_comment_btn,
 }) => {
   const { sendRequest: sendRequestPostLike, data: likeCount } = useAxios<
     PostLikesInput,
@@ -53,7 +60,7 @@ const PostItem: React.FC<PostItemProps> = ({
   const authCtx = useContext(AuthContext);
   const userID =
     authCtx.userData && authCtx.userData.id ? authCtx.userData.id : null;
-  const disable_btn = false;
+  const disable_btn = userID ? false : true;
 
   const viewPostHandler = () => {
     navigate(`/posts/${id}`, { replace: true });
@@ -88,13 +95,14 @@ const PostItem: React.FC<PostItemProps> = ({
         </div>
         <div className={classes.footer}>
           <p>
-            {author.username} : {timestamp}
+            @{author.username} : {formattedDate(timestamp)}&nbsp;
+            {itemEdited(edited)}
           </p>
           <div className={classes.actions}>
             {userID && userID === author.id && (
               <Fragment>
                 <Button
-                  title="Edit Post"
+                  title="Edit"
                   onClick={editPostHandler}
                   displaystyle="button_icon"
                 >
@@ -103,7 +111,7 @@ const PostItem: React.FC<PostItemProps> = ({
                   </span>
                 </Button>
                 <Button
-                  title="Delete Post"
+                  title="Delete"
                   onClick={deletePostHandler}
                   displaystyle="button_icon"
                 >
@@ -113,17 +121,19 @@ const PostItem: React.FC<PostItemProps> = ({
                 </Button>
               </Fragment>
             )}
+            {show_comment_btn && (
+              <Button
+                title="Comments"
+                displaystyle="button_icon"
+                onClick={viewPostHandler}
+              >
+                <span className={classes.icon}>
+                  <CommentIcon /> ({comments})
+                </span>
+              </Button>
+            )}
             <Button
-              title="View Post"
-              displaystyle="button_icon"
-              onClick={viewPostHandler}
-            >
-              <span className={classes.icon}>
-                <CommentIcon /> ({comments})
-              </span>
-            </Button>
-            <Button
-              title="Like Post"
+              title="Like"
               disabled={disable_btn}
               displaystyle="button_icon"
               onClick={toggleLikeHandler}

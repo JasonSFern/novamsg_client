@@ -1,15 +1,15 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
+  background-color: transparent;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
 }
 
 .centered {
@@ -21,23 +21,12 @@ code {
 }
 
 .focused {
-  font-size: 2rem;
-  font-weight: bold;
-}
-
-.error-msg {
-  height: 20rem;
-  margin: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.error-msg p {
-  color: #741188;
   font-size: 3rem;
   font-weight: bold;
+  color: white;
+}
+
+.gen-message {
+  color: #ba1ed5;
+  font-weight: 600;
 }

@@ -1,4 +1,5 @@
 import { useState, useContext, useEffect, Fragment, createRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import useAxios from '../../hooks/use-axios';
 import { login } from '../../lib/api';
@@ -17,6 +18,8 @@ export interface LoginFormProps {
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({ onSwitchAuthModeHandler }) => {
+  const navigate = useNavigate();
+
   const [showStatusMessage, setShowStatusMessage] = useState<boolean>(false);
   const [statusMessageType, setStatusMessageType] = useState<string>('success');
   const [statusMessage, setStatusMessage] = useState<string>('');
@@ -72,6 +75,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSwitchAuthModeHandler }) => {
             data.session.user_data,
             data.session.expires
           );
+
+          navigate(`/posts/`, { replace: true });
         }
       }
       setShowStatusMessage(true);

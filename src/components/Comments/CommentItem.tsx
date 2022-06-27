@@ -17,7 +17,12 @@ import AuthContext from '../../context/auth-context';
 import useAxios from '../../hooks/use-axios';
 import { toggleCommentLike, deleteComment } from '../../lib/api';
 
-import { userLiked, itemCount } from '../../lib/content';
+import {
+  formattedDate,
+  userLiked,
+  itemCount,
+  itemEdited,
+} from '../../lib/content';
 import {
   CommentLike,
   CommentLikesInput,
@@ -37,6 +42,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
   content,
   author,
   timestamp,
+  edited,
   refreshlist,
 }) => {
   const { sendRequest: sendRequestCommentLike, data: likeCount } = useAxios<
@@ -52,7 +58,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
   const authCtx = useContext(AuthContext);
   const userID =
     authCtx.userData && authCtx.userData.id ? authCtx.userData.id : null;
-  const disable_btn = false;
+  const disable_btn = userID ? false : true;
 
   const editCommentHandler = () => {
     navigate(`/edit-comment/${id}`, { replace: true });
@@ -83,13 +89,14 @@ const CommentItem: React.FC<CommentItemProps> = ({
           </div>
           <div className={classes.footer}>
             <p>
-              {author.username} : {timestamp}
+              @{author.username} : {formattedDate(timestamp)}&nbsp;
+              {itemEdited(edited)}
             </p>
             <div className={classes.actions}>
               {userID && userID === author.id && (
                 <Fragment>
                   <Button
-                    title="Edit Comment"
+                    title="Edit"
                     onClick={editCommentHandler}
                     displaystyle="button_icon"
                   >
@@ -98,7 +105,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
                     </span>
                   </Button>
                   <Button
-                    title="Delete Comment"
+                    title="Delete"
                     onClick={deleteCommentHandler}
                     displaystyle="button_icon"
                   >
@@ -109,7 +116,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
                 </Fragment>
               )}
               <Button
-                title="Like Comment"
+                title="Like"
                 disabled={disable_btn}
                 displaystyle="button_icon"
                 onClick={toggleLikeHandler}

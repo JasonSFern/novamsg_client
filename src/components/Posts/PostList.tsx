@@ -65,10 +65,11 @@ const PostList: React.FC<PostListProps> = ({
               id={post.id}
               author={post.author}
               timestamp={post.updatedAt}
+              edited={post.createdAt !== post.updatedAt}
               content={post.content}
               comments={post.comments}
-              likes={post.post_likes}
               refreshlist={onRefresh}
+              show_comment_btn={true}
             />
           </li>
         ))}
@@ -84,6 +85,15 @@ const PostList: React.FC<PostListProps> = ({
         marginPagesDisplayed={2}
         forcePage={selectedpage}
         renderOnZeroPageCount={undefined}
+        breakLinkClassName={classes.pagelink}
+        pageLinkClassName={classes.pagelink}
+        previousLinkClassName={classes.pagelink}
+        nextLinkClassName={classes.pagelink}
+        breakClassName={classes.pageitem}
+        pageClassName={classes.pageitem}
+        previousClassName={classes.pageitem}
+        nextClassName={classes.pageitem}
+        activeClassName={classes.paginate_active}
       />
     </Fragment>
   );
