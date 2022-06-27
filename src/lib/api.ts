@@ -18,7 +18,12 @@ import {
   ContentOutput,
   DeleteContentOutput,
 } from '../interfaces/content.interface';
-import { Comment, CommentInput } from '../interfaces/comment.interface';
+import {
+  Comment,
+  CommentInput,
+  CommentLike,
+  CommentLikesInput,
+} from '../interfaces/comment.interface';
 
 const DOMAIN = process.env.REACT_APP_DOMAIN;
 
@@ -254,6 +259,23 @@ export const deleteComment = async (
   const response = await axios({
     method: 'DELETE',
     url: `${DOMAIN}/comment/${commentId}`,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  console.log(response);
+
+  return await response.data;
+};
+
+// Toggle likeing a comment
+export const toggleCommentLike = async (
+  payload: CommentLikesInput
+): Promise<CommentLike[]> => {
+  const response = await axios({
+    method: 'POST',
+    url: `${DOMAIN}/comment/toggle-like`,
+    data: payload,
     headers: {
       'Content-Type': 'application/json',
     },
