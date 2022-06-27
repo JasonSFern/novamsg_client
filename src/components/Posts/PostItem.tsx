@@ -1,8 +1,9 @@
-import { Fragment, useContext } from 'react';
+import { Fragment, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { User } from '../../interfaces/user.interface';
 import { DeleteContentOutput } from '../../interfaces/content.interface';
+import { PostLike, PostLikesInput } from '../../interfaces/post.interface';
 
 import Card from '../UI/Card/Card';
 import Button from '../UI/Button/Button';
@@ -16,7 +17,9 @@ import classes from './PostItem.module.css';
 import AuthContext from '../../context/auth-context';
 
 import useAxios from '../../hooks/use-axios';
-import { deletePost } from '../../lib/api';
+import { togglePostLike, deletePost } from '../../lib/api';
+
+import { userLiked, itemCount } from '../../lib/content';
 
 interface PostItemProps {
   id: number;
@@ -24,7 +27,7 @@ interface PostItemProps {
   author: User;
   timestamp: Date;
   comments: number;
-  likes: number;
+  likes: PostLike[];
   refreshlist?: () => void;
 }
 
@@ -37,6 +40,10 @@ const PostItem: React.FC<PostItemProps> = ({
   likes,
   refreshlist,
 }) => {
+  const { sendRequest: sendRequestPostLike, data: likeCount } = useAxios<
+    PostLikesInput,
+    PostLike[]
+  >(togglePostLike);
   const { sendRequest: sendRequestPostDelete, data: deleteData } = useAxios<
     number,
     DeleteContentOutput
@@ -61,6 +68,17 @@ const PostItem: React.FC<PostItemProps> = ({
       sendRequestPostDelete(id).then(refreshlist);
     }
   };
+
+  const toggleLikeHandler = () => {
+    if (userID) {
+      sendRequestPostLike({ user_id: userID, post_id: id });
+    }
+  };
+
+  useEffect(() => {
+    console.log('ewbgkeht');
+    sendRequestPostLike({ post_id: id });
+  }, [sendRequestPostLike]);
 
   return (
     <Card>
@@ -108,9 +126,11 @@ const PostItem: React.FC<PostItemProps> = ({
               title="Like Post"
               disabled={disable_btn}
               displaystyle="button_icon"
+              onClick={toggleLikeHandler}
+              toggled={userLiked(likeCount, userID)}
             >
               <span className={classes.icon}>
-                <LikeIcon /> ({likes})
+                <LikeIcon /> ({itemCount(likeCount)})
               </span>
             </Button>
           </div>

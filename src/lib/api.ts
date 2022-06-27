@@ -8,6 +8,8 @@ import {
 } from '../interfaces/user.interface';
 import {
   Post,
+  PostLike,
+  PostLikesInput,
   PostPaginated,
   PostPaginateInput,
 } from '../interfaces/post.interface';
@@ -122,6 +124,23 @@ export const deletePost = async (
   const response = await axios({
     method: 'DELETE',
     url: `${DOMAIN}/post/${postId}`,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  console.log(response);
+
+  return await response.data;
+};
+
+// Toggle likeing a post
+export const togglePostLike = async (
+  payload: PostLikesInput
+): Promise<PostLike[]> => {
+  const response = await axios({
+    method: 'POST',
+    url: `${DOMAIN}/post/toggle-like`,
+    data: payload,
     headers: {
       'Content-Type': 'application/json',
     },

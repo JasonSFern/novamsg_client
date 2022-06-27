@@ -1,12 +1,14 @@
 import { User } from './user.interface';
 
-interface PostLikes extends User {
-  post_users: {
-    createdAt: Date;
-    updatedAt: Date;
-    post_id: number;
-    user_id: number;
-  };
+export interface PostLike {
+  post_id: number;
+  user_id: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface PostLikes extends User {
+  post_users: PostLike;
 }
 
 interface PostComments {
@@ -25,7 +27,7 @@ export interface Post {
   createdAt: Date;
   updatedAt: Date;
   author: User;
-  post_likes: number;
+  post_likes: PostLike[];
   comments: number;
 }
 
@@ -44,4 +46,9 @@ export interface PostPaginateInput {
 export interface CreatePostInput {
   user_id: number;
   content: string;
+}
+
+export interface PostLikesInput {
+  user_id?: number;
+  post_id: number;
 }
