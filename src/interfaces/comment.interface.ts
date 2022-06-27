@@ -8,10 +8,10 @@ export interface Comment {
   createdAt: Date;
   updatedAt: Date;
   comment_author: User;
-  comment_likes: CommentLikes[];
+  comment_likes: CommentLike[];
 }
 
-export interface CommentLikes {
+export interface CommentLike {
   comment_id: number;
   user_id: number;
   createdAt?: Date;
@@ -22,4 +22,9 @@ export interface CommentInput {
   user_id: number;
   post_id: number | string;
   content: string;
+}
+
+export interface CommentLikesInput {
+  user_id?: number;
+  comment_id: number;
 }

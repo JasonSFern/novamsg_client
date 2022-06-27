@@ -8,6 +8,7 @@ interface ButtonProps {
   type?: 'submit' | 'reset' | 'button';
   disabled?: boolean;
   onClick?: () => void;
+  toggled?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -17,10 +18,13 @@ const Button: React.FC<ButtonProps> = ({
   disabled,
   onClick,
   children,
+  toggled,
 }) => {
   return (
     <button
-      className={`${classes.button} ${classes[displaystyle]}`}
+      className={`${classes.button} ${classes[displaystyle]} ${
+        toggled ? classes.button_toggled : ''
+      }`}
       title={title}
       type={type || 'button'}
       onClick={onClick}

@@ -1,4 +1,4 @@
-import { Fragment, useContext } from 'react';
+import { Fragment, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { User } from '../../interfaces/user.interface';
@@ -15,7 +15,13 @@ import classes from './CommentItem.module.css';
 import AuthContext from '../../context/auth-context';
 
 import useAxios from '../../hooks/use-axios';
-import { deleteComment } from '../../lib/api';
+import { toggleCommentLike, deleteComment } from '../../lib/api';
+
+import { userLiked, itemCount } from '../../lib/content';
+import {
+  CommentLike,
+  CommentLikesInput,
+} from '../../interfaces/comment.interface';
 
 interface CommentItemProps {
   id: number;
@@ -33,6 +39,10 @@ const CommentItem: React.FC<CommentItemProps> = ({
   timestamp,
   refreshlist,
 }) => {
+  const { sendRequest: sendRequestCommentLike, data: likeCount } = useAxios<
+    CommentLikesInput,
+    CommentLike[]
+  >(toggleCommentLike);
   const { sendRequest: sendRequestCommentDelete, data: deleteData } = useAxios<
     number,
     DeleteContentOutput
@@ -53,6 +63,16 @@ const CommentItem: React.FC<CommentItemProps> = ({
       sendRequestCommentDelete(id).then(refreshlist);
     }
   };
+
+  const toggleLikeHandler = () => {
+    if (userID) {
+      sendRequestCommentLike({ user_id: userID, comment_id: id });
+    }
+  };
+
+  useEffect(() => {
+    sendRequestCommentLike({ comment_id: id });
+  }, [sendRequestCommentLike]);
 
   return (
     <li className={classes.item}>
@@ -92,9 +112,11 @@ const CommentItem: React.FC<CommentItemProps> = ({
                 title="Like Comment"
                 disabled={disable_btn}
                 displaystyle="button_icon"
+                onClick={toggleLikeHandler}
+                toggled={userLiked(likeCount, userID)}
               >
                 <span className={classes.icon}>
-                  <LikeIcon /> ({1})
+                  <LikeIcon /> ({itemCount(likeCount)})
                 </span>
               </Button>
             </div>
