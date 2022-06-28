@@ -13,8 +13,6 @@ import UserProfile from '../UserProfile/UserProfile';
 const ProtectedRoute: React.FC = ({ children }) => {
   const authCtx = useContext(AuthContext);
 
-  const hideUserProfileHandler = () => {};
-
   const { sendRequest, status, data, error } = useAxios<string, UserSession>(
     userAuthenticated
   );
@@ -43,11 +41,11 @@ const ProtectedRoute: React.FC = ({ children }) => {
       if (!data.auth) {
         authCtx.logout();
 
-        return <UserProfile onClose={hideUserProfileHandler} />;
+        return <UserProfile expiredSession={true} />;
       }
     }
   } else {
-    return <UserProfile onClose={hideUserProfileHandler} />;
+    return <UserProfile />;
   }
 };
 

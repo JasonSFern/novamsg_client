@@ -15,14 +15,26 @@ import AuthContext from '../../context/auth-context';
 
 export interface LoginFormProps {
   onSwitchAuthModeHandler: () => void;
+  expiredSession?: boolean;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ onSwitchAuthModeHandler }) => {
+const LoginForm: React.FC<LoginFormProps> = ({
+  onSwitchAuthModeHandler,
+  expiredSession,
+}) => {
   const navigate = useNavigate();
 
   const [showStatusMessage, setShowStatusMessage] = useState<boolean>(false);
   const [statusMessageType, setStatusMessageType] = useState<string>('success');
   const [statusMessage, setStatusMessage] = useState<string>('');
+
+  if (expiredSession) {
+    setShowStatusMessage(true);
+    setStatusMessageType('error');
+    setStatusMessage(
+      'You have been logged out due to inactivity. Please login to access this page'
+    );
+  }
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 

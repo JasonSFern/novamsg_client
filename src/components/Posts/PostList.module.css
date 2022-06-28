@@ -44,8 +44,16 @@
   background-color: rgb(228 228 228 / 15%);
 }
 
+.pageitem:hover {
+  background-color: #4f005f;
+}
+
 .pagelink {
   border-color: transparent;
+}
+
+.pagelinknav {
+  margin: 10px;
 }
 
 @keyframes slideUp {

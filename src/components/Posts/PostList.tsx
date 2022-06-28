@@ -5,6 +5,8 @@ import ReactPaginate from 'react-paginate';
 import { Post } from '../../interfaces/post.interface';
 
 import Button from '../UI/Button/Button';
+import { FaCaretLeft } from 'react-icons/fa';
+import { FaCaretRight } from 'react-icons/fa';
 
 import PostItem from './PostItem';
 import classes from './PostList.module.css';
@@ -77,18 +79,18 @@ const PostList: React.FC<PostListProps> = ({
       <ReactPaginate
         className={classes.paginate}
         breakLabel="..."
-        nextLabel=">"
-        previousLabel="<"
+        nextLabel={<FaCaretRight />}
+        previousLabel={<FaCaretLeft />}
         onPageChange={paginatePageChangeHandler}
         pageCount={totalpages}
-        pageRangeDisplayed={2}
-        marginPagesDisplayed={2}
+        pageRangeDisplayed={4}
+        marginPagesDisplayed={4}
         forcePage={selectedpage}
         renderOnZeroPageCount={undefined}
         breakLinkClassName={classes.pagelink}
         pageLinkClassName={classes.pagelink}
-        previousLinkClassName={classes.pagelink}
-        nextLinkClassName={classes.pagelink}
+        previousLinkClassName={classes.pagelinknav}
+        nextLinkClassName={classes.pagelinknav}
         breakClassName={classes.pageitem}
         pageClassName={classes.pageitem}
         previousClassName={classes.pageitem}

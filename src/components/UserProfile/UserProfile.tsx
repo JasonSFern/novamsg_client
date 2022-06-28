@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { Fragment, useContext, useState } from 'react';
 
 import Modal from '../UI/Modal/Modal';
 import LoginForm from './LoginForm';
@@ -8,10 +8,14 @@ import ProfileForm from './ProfileForm';
 import AuthContext from '../../context/auth-context';
 
 interface UserProfileProps {
-  onClose: () => void;
+  onClose?: () => void;
+  expiredSession?: boolean;
 }
 
-const UserProfile: React.FC<UserProfileProps> = ({ onClose }) => {
+const UserProfile: React.FC<UserProfileProps> = ({
+  onClose,
+  expiredSession,
+}) => {
   const [isLogin, setIsLogin] = useState<boolean>(true);
 
   const authCtx = useContext(AuthContext);
@@ -25,7 +29,10 @@ const UserProfile: React.FC<UserProfileProps> = ({ onClose }) => {
   const didSubmitModalContent = (
     <React.Fragment>
       {!isLoggedIn && isLogin && (
-        <LoginForm onSwitchAuthModeHandler={switchAuthModeHandler} />
+        <LoginForm
+          expiredSession={expiredSession}
+          onSwitchAuthModeHandler={switchAuthModeHandler}
+        />
       )}
       {!isLoggedIn && !isLogin && (
         <RegisterForm onSwitchAuthModeHandler={switchAuthModeHandler} />
@@ -34,7 +41,12 @@ const UserProfile: React.FC<UserProfileProps> = ({ onClose }) => {
     </React.Fragment>
   );
 
-  return <Modal onClose={onClose}>{didSubmitModalContent}</Modal>;
+  return (
+    <Fragment>
+      {onClose && <Modal onClose={onClose}>{didSubmitModalContent}</Modal>}
+      {!onClose && <Modal>{didSubmitModalContent}</Modal>}
+    </Fragment>
+  );
 };
 
 export default UserProfile;
