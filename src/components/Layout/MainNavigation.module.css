@@ -41,10 +41,22 @@
   text-align: center;
   font-family: 'lato', sans-serif;
   font-weight: 800;
-  font-size: 30px;
   letter-spacing: 10px;
   background-color: black;
 }
+
+@media (min-width: 600px) {
+  .title {
+    font-size: 30px;
+  }
+}
+
+@media (max-width: 600px) {
+  .title {
+    font-size: 15px;
+  }
+}
+
 .title img {
   max-width: 150px;
   width: 100%;
