@@ -11,6 +11,9 @@ import {
   ContentType,
 } from '../../interfaces/content.interface';
 
+import ConfirmDialog from '../ConfirmDialog/ConfirmDialog';
+import { useCallbackPrompt } from '../../hooks/use-callback-prompt';
+
 interface PostFormProps {
   isLoading: boolean;
   type: ContentType;
@@ -36,11 +39,20 @@ const PostForm: React.FC<PostFormProps> = ({
 
   const contentInputRef = createRef<HTMLTextAreaElement>();
 
-  const [isEntering, setIsEntering] = useState<boolean>(false);
+  const [showDialog, setShowDialog] = useState<boolean>(false);
+  const [showPrompt, confirmNavigation, cancelNavigation] =
+    useCallbackPrompt(showDialog);
 
-  function submitFormHandler(event: React.FormEvent<HTMLFormElement>) {
+  const finishingEnteringHandler = () => {
+    setShowDialog(false);
+  };
+
+  const formFocusHandler = () => {
+    setShowDialog(true);
+  };
+
+  const submitFormHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log('hello');
 
     const enteredContent = contentInputRef.current?.value;
 
@@ -59,20 +71,17 @@ const PostForm: React.FC<PostFormProps> = ({
         });
       }
     }
-  }
-
-  const finishingEnteringHandler = () => {
-    setIsEntering(false);
-    console.log(isEntering);
-  };
-
-  const formFocusHandler = () => {
-    setIsEntering(true);
-    console.log(isEntering);
   };
 
   return (
     <Fragment>
+      <ConfirmDialog
+        // @ts-ignore
+        showDialog={showPrompt}
+        confirmCallback={confirmNavigation}
+        cancelCallback={cancelNavigation}
+        message="All current form data will be lost. Are you sure you wish to leave?"
+      />
       <Card>
         <form
           onFocus={formFocusHandler}
@@ -90,6 +99,7 @@ const PostForm: React.FC<PostFormProps> = ({
               rows={5}
               defaultValue={defaultValue}
               ref={contentInputRef}
+              onChange={formFocusHandler}
             ></textarea>
           </div>
           <div className={classes.actions}>

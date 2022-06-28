@@ -1,41 +1,77 @@
+/* For all buttons*/
 .button {
+  text-align: center;
+}
+.button button {
   font: inherit;
   cursor: pointer;
   border-radius: 10px;
   color: white;
-  padding: 0.75rem;
   display: flex;
-  justify-content: space-around;
-  align-items: center;
   font-weight: bold;
 }
 
+/* Standard button styles */
+.button_std button {
+  padding: 0.75rem;
+  border: 1px solid #4f005f;
+  background: #4f005f;
+}
+.button_std button:hover,
+.button_std button:active {
+  background: #741188;
+  border-color: #741188;
+}
+.button_std button:focus {
+  outline: none;
+}
+.button_std label {
+  color: transparent;
+  display: none;
+  text-align: center;
+}
+
+/* Icon button styles */
 .button_icon {
+  transition: all 0.2s ease-in-out;
+}
+.button_icon button {
+  padding: 0.25rem 0.75rem 0.25rem 0.75rem;
   border: 1px solid transparent;
   background: transparent;
 }
-
 .button_icon:hover,
 .button_icon:active {
-  color: white;
-  background: transparent;
-  border: 1px solid white;
+  transform: scale(1.3);
 }
-
-.button_icon:focus {
+.button_icon button:focus {
   outline: none;
 }
+.button_icon label {
+  color: white;
+  font-size: x-small;
+  text-align: center;
+}
 
-.button_outline {
+/* Outline button styles */
+.button_outline button {
+  padding: 0.75rem;
   border: 1px solid white;
   background-color: transparent;
 }
-
-.button_outline:hover {
+.button_outline label {
+  color: transparent;
+  display: none;
+  text-align: center;
+}
+.button_outline button:hover {
   background-color: #741188;
 }
 
-.button_outline {
-  border: 1px solid white;
-  background-color: transparent;
+/* For when a button is toggled for likes*/
+.button_toggled button {
+  color: #ba1ed5;
+}
+.button_toggled label {
+  color: #ba1ed5;
 }

@@ -7,8 +7,8 @@ interface ButtonProps {
   displaystyle: string;
   type?: 'submit' | 'reset' | 'button';
   disabled?: boolean;
-  onClick?: () => void;
   toggled?: boolean;
+  onClick?: () => void;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -16,22 +16,26 @@ const Button: React.FC<ButtonProps> = ({
   displaystyle,
   type,
   disabled,
-  onClick,
-  children,
   toggled,
+  children,
+  onClick,
 }) => {
   return (
-    <button
+    <div
       className={`${classes.button} ${classes[displaystyle]} ${
         toggled ? classes.button_toggled : ''
       }`}
-      title={title}
-      type={type || 'button'}
-      onClick={onClick}
-      disabled={disabled}
     >
-      {children}
-    </button>
+      <button
+        title={title}
+        type={type || 'button'}
+        onClick={onClick}
+        disabled={disabled}
+      >
+        {children}
+      </button>
+      <label className={classes.label}>{title}</label>
+    </div>
   );
 };
 

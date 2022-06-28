@@ -1,5 +1,7 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+
+import { Comment } from '../../interfaces/comment.interface';
 
 import useAxios from '../../hooks/use-axios';
 import { getPostComments } from '../../lib/api';
@@ -10,8 +12,12 @@ import CommentsList from './CommentsList';
 import FormMini from '../Form/FormMini';
 import Button from '../UI/Button/Button';
 
+import AuthContext from '../../context/auth-context';
+
 const Comments = () => {
-  const [isAddingComment, setIsAddingComment] = useState(false);
+  const authCtx = useContext(AuthContext);
+
+  const [isAddingComment, setIsAddingComment] = useState<boolean>(false);
   const params = useParams();
 
   let { postId } = params;
@@ -23,8 +29,7 @@ const Comments = () => {
     sendRequest,
     status,
     data: loadedComments,
-  } = useAxios<string, any>(getPostComments);
-  // TODO: Fix interfaces bullshit
+  } = useAxios<string, Comment[]>(getPostComments);
 
   useEffect(() => {
     if (postId) sendRequest(postId);
@@ -53,35 +58,37 @@ const Comments = () => {
     );
   }
 
-  if (status === 'completed' && loadedComments && loadedComments.length > 0) {
-    comments = (
-      <CommentsList refresh={addedCommentHandler} comments={loadedComments} />
-    );
-  }
-
-  if (
-    status === 'completed' &&
-    (!loadedComments || loadedComments.length === 0)
-  ) {
-    comments = <p>No comments added yet!</p>;
-  }
-
   return (
     <section className={classes.comments}>
-      <h1>User Comments</h1>
-      {comments}
-      {!isAddingComment && (
+      {status === 'pending' && (
+        <div className="centered">
+          <LoadingSpinner />
+        </div>
+      )}
+      {status === 'completed' &&
+        (!loadedComments || loadedComments.length === 0) && (
+          <p className="centered gen-message">No comments added yet!</p>
+        )}
+      {status === 'completed' &&
+        loadedComments &&
+        loadedComments.length > 0 && (
+          <CommentsList
+            refresh={addedCommentHandler}
+            comments={loadedComments}
+          />
+        )}
+      {authCtx.isLoggedIn && !isAddingComment && (
         <div className={classes.actions}>
           <Button
             title="Add Comment"
             displaystyle="button_std"
             onClick={startAddCommentHandler}
           >
-            Add a Comment
+            Add Comment
           </Button>
         </div>
       )}
-      {isAddingComment && (
+      {authCtx.isLoggedIn && isAddingComment && (
         <FormMini
           postId={postId}
           onAddedComment={addedCommentHandler}

@@ -59,8 +59,10 @@ const EditComment = () => {
 
   return (
     <Fragment>
-      {errorG && <p className="centered focused">{errorG}</p>}
-      {!loadedCommentG?.content && <p>No post found</p>}
+      {errorG && <p className="centered gen-message">{errorG}</p>}
+      {!loadedCommentG?.content && (
+        <p className="centered gen-message">No post found</p>
+      )}
       {statusG === 'pending' && (
         <div className="centered">
           <LoadingSpinner />

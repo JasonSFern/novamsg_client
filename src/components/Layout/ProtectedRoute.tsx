@@ -7,6 +7,7 @@ import { userAuthenticated } from '../../lib/api';
 import useAxios from '../../hooks/use-axios';
 
 import AuthContext from '../../context/auth-context';
+import UserProfile from '../UserProfile/UserProfile';
 
 // @ts-ignore
 const ProtectedRoute: React.FC = ({ children }) => {
@@ -40,11 +41,11 @@ const ProtectedRoute: React.FC = ({ children }) => {
       if (!data.auth) {
         authCtx.logout();
 
-        return <Navigate to="/posts" replace />;
+        return <UserProfile expiredSession={true} />;
       }
     }
   } else {
-    return <Navigate to="/posts" replace />;
+    return <UserProfile />;
   }
 };
 

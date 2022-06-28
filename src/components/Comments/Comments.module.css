@@ -1,5 +1,6 @@
 .comments {
   text-align: center;
+  border-top: 2px solid rgb(255, 255, 255, 0.5);
 }
 
 .comments h1 {

@@ -209,7 +209,7 @@ export const userAuthenticated = async (
 };
 
 // Get comments for a post
-export const getPostComments = async (postId: string): Promise<Comment> => {
+export const getPostComments = async (postId: string): Promise<Comment[]> => {
   const response = await axios({
     method: 'POST',
     url: `${DOMAIN}/comment/post-comments`,

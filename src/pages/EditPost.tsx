@@ -59,8 +59,10 @@ const EditPost = () => {
 
   return (
     <Fragment>
-      {errorG && <p className="centered focused">{errorG}</p>}
-      {!loadedPostG?.content && <p>No post found</p>}
+      {errorG && <p className="centered focused gen-message">{errorG}</p>}
+      {!loadedPostG?.content && (
+        <p className="centered gen-message">No post found</p>
+      )}
       {statusG === 'pending' && (
         <div className="centered">
           <LoadingSpinner />

@@ -69,7 +69,7 @@ const UserPosts: React.FC = () => {
           <LoadingSpinner />
         </div>
       )}
-      {error && <p className="centered focused">{error}</p>}
+      {error && <p className="centered focused gen-message">{error}</p>}
       {!error &&
         status === 'completed' &&
         (!data || data.rows.length === 0) && <NoPostsFound />}
