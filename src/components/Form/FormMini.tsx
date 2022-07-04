@@ -1,9 +1,13 @@
 import { Fragment, createRef, useEffect, useContext, useState } from 'react';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 import useAxios from '../../hooks/use-axios';
 import { addComment } from '../../lib/api';
+
 import Button from '../UI/Button/Button';
 import LoadingSpinner from '../UI/LoadingSpinner/LoadingSpinner';
+import ReCaptchaBadge from '../UI/ReCaptchaBadge/ReCaptchaBadge';
+
 import classes from './FormMini.module.css';
 
 import AuthContext from '../../context/auth-context';
@@ -22,10 +26,13 @@ const FormMini: React.FC<FormMiniProps> = ({
   onCancelAddComment,
   onAddedComment,
 }) => {
-  const commentTextRef = createRef<HTMLTextAreaElement>();
   const authCtx = useContext(AuthContext);
+  const reCaptchaKey = authCtx.reCaptchaKey;
   const userID =
     authCtx.userData && authCtx.userData.id ? authCtx.userData.id : null;
+
+  const commentTextRef = createRef<HTMLTextAreaElement>();
+  const reCaptchaRef = createRef<ReCAPTCHA>();
 
   const { sendRequest, status, error } = useAxios(addComment);
 
@@ -47,21 +54,25 @@ const FormMini: React.FC<FormMiniProps> = ({
     setShowDialog(true);
   };
 
-  const submitFormHandler = (event: React.FormEvent<HTMLFormElement>) => {
+  const submitFormHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const enteredText = commentTextRef.current?.value;
+    const reCaptchaToken = await reCaptchaRef.current?.executeAsync();
+    reCaptchaRef.current?.reset();
 
     if (enteredText && postId && userID)
       sendRequest({
         post_id: postId,
         user_id: userID,
         content: enteredText,
+        token: reCaptchaToken,
       });
   };
 
   return (
     <Fragment>
+      <ReCAPTCHA sitekey={reCaptchaKey} size="invisible" ref={reCaptchaRef} />
       <ConfirmDialog
         // @ts-ignore
         showDialog={showPrompt}
@@ -88,21 +99,24 @@ const FormMini: React.FC<FormMiniProps> = ({
           ></textarea>
         </div>
         <div className={classes.actions}>
-          <Button
-            title="Submit"
-            type="submit"
-            displaystyle="button_std"
-            onClick={finishingEnteringHandler}
-          >
-            Post
-          </Button>
-          <Button
-            title="Cancel"
-            onClick={onCancelAddComment}
-            displaystyle="button_std"
-          >
-            Cancel
-          </Button>
+          <ReCaptchaBadge align="left" />
+          <div>
+            <Button
+              title="Cancel"
+              onClick={onCancelAddComment}
+              displaystyle="button_std"
+            >
+              Cancel
+            </Button>
+            <Button
+              title="Submit"
+              type="submit"
+              displaystyle="button_std"
+              onClick={finishingEnteringHandler}
+            >
+              Post
+            </Button>
+          </div>
         </div>
       </form>
     </Fragment>

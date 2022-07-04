@@ -48,16 +48,6 @@ const Comments = () => {
     if (postId) sendRequest(postId);
   }, [sendRequest, postId]);
 
-  let comments;
-
-  if (status === 'pending') {
-    comments = (
-      <div className="centered">
-        <LoadingSpinner />
-      </div>
-    );
-  }
-
   return (
     <section className={classes.comments}>
       {status === 'pending' && (

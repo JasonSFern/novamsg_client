@@ -7,6 +7,7 @@ interface AuthContextAttributes {
   isLoggedIn: boolean;
   token?: string | null;
   userData?: User | null;
+  reCaptchaKey: string;
   login: (t: string, u: User, e: number) => void;
   logout: () => void;
   renewSession: (s: Session) => void;
@@ -16,6 +17,7 @@ const AuthContext = React.createContext<AuthContextAttributes>({
   isLoggedIn: false,
   token: undefined,
   userData: undefined,
+  reCaptchaKey: '',
   login: (t: string, u: User, e: number) => {},
   logout: () => {},
   renewSession: (s: Session) => {},
@@ -25,6 +27,11 @@ export const AuthContextProvider: React.FC = ({ children }) => {
   const tokenData = retrieveStoredToken();
   const [token, setToken] = useState<string | null>(tokenData.token);
   const [userData, setUserData] = useState<User | null>(tokenData.userData);
+  const [reCaptchaKey, setReCaptchaKey] = useState<string>(
+    process.env.REACT_APP_RECAPTCHA_SITE_KEY
+      ? process.env.REACT_APP_RECAPTCHA_SITE_KEY
+      : ''
+  );
   const [duration, setDuration] = useState<number | undefined>(
     tokenData.duration
   );
@@ -62,6 +69,7 @@ export const AuthContextProvider: React.FC = ({ children }) => {
     token: token,
     isLoggedIn: userIsLoggedIn,
     userData: userData,
+    reCaptchaKey: reCaptchaKey,
     login: loginHandler,
     logout: logoutHandler,
     renewSession: renewSessionHandler,

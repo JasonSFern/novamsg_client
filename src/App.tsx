@@ -18,7 +18,7 @@ const EditComment = React.lazy(() => import('./pages/EditComment'));
 const AccessDenied = React.lazy(() => import('./pages/AccessDenied'));
 const NotFound = React.lazy(() => import('./pages/NotFound'));
 
-function App() {
+const App = () => {
   const fallback = () => {
     return (
       <div className="centered">
@@ -30,7 +30,7 @@ function App() {
   return (
     <Layout>
       <Backdrop>
-        <Suspense fallback={fallback}>
+        <Suspense fallback={fallback()}>
           <Routes>
             <Route path="/" element={<Navigate to="/posts" />} />
             <Route path="/posts" element={<AllPosts />} />
@@ -54,6 +54,6 @@ function App() {
       </Backdrop>
     </Layout>
   );
-}
+};
 
 export default App;

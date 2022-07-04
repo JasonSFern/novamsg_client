@@ -41,7 +41,7 @@ const EditPost = () => {
 
   useEffect(() => {
     if (statusE == 'completed') {
-      navigate('/posts');
+      if (!errorE) navigate('/posts', { replace: true });
     }
   }, [statusE, navigate]);
 
@@ -59,7 +59,8 @@ const EditPost = () => {
 
   return (
     <Fragment>
-      {errorG && <p className="centered focused gen-message">{errorG}</p>}
+      {errorG && <p className="centered gen-message">{errorG}</p>}
+      {errorE && <p className="centered gen-message">{errorE}</p>}
       {!loadedPostG?.content && (
         <p className="centered gen-message">No post found</p>
       )}

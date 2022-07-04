@@ -1,4 +1,5 @@
-import { createRef, Fragment, useEffect, useState } from 'react';
+import { createRef, Fragment, useContext, useEffect, useState } from 'react';
+// import ReCAPTCHA from 'react-google-recaptcha';
 
 import useAxios from '../../hooks/use-axios';
 import { register } from '../../lib/api';
@@ -7,8 +8,11 @@ import { RegisterInput, User } from '../../interfaces/user.interface';
 
 import Button from '../UI/Button/Button';
 import LoadingSpinner from '../UI/LoadingSpinner/LoadingSpinner';
+import ReCaptchaBadge from '../UI/ReCaptchaBadge/ReCaptchaBadge';
 
 import classes from './UserProfile.module.css';
+
+import AuthContext from '../../context/auth-context';
 
 export interface RegisterFormProps {
   onSwitchAuthModeHandler: () => void;
@@ -17,6 +21,9 @@ export interface RegisterFormProps {
 const RegisterForm: React.FC<RegisterFormProps> = ({
   onSwitchAuthModeHandler,
 }) => {
+  const authCtx = useContext(AuthContext);
+  // const reCaptchaKey = authCtx.reCaptchaKey;
+
   const [showStatusMessage, setShowStatusMessage] = useState<boolean>(false);
   const [statusMessageType, setStatusMessageType] = useState<string>('success');
   const [statusMessage, setStatusMessage] = useState<string>('');
@@ -28,10 +35,11 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
   const emailInputRef = createRef<HTMLInputElement>();
   const usernameInputRef = createRef<HTMLInputElement>();
   const passwordInputRef = createRef<HTMLInputElement>();
+  // const reCaptchaRegRef = createRef<ReCAPTCHA>();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const submitHandler = (event: React.FormEvent<HTMLFormElement>): void => {
+  const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     let enteredEmail, enteredUsername, enteredPassword;
@@ -45,6 +53,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
     if (passwordInputRef.current != null)
       enteredPassword = passwordInputRef.current?.value;
 
+    // const reCaptchaRegToken = await reCaptchaRegRef.current?.executeAsync();
+    // reCaptchaRegRef.current?.reset();
+
     if (enteredEmail && enteredUsername && enteredPassword) {
       setIsLoading(true);
 
@@ -52,6 +63,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
         username: enteredUsername,
         email: enteredEmail,
         password: enteredPassword,
+        // token: reCaptchaRegToken,
       });
     }
   };
@@ -139,6 +151,12 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
           </div>
         </form>
       )}
+      {/* <ReCaptchaBadge align="center" /> */}
+      {/* <ReCAPTCHA
+        sitekey={reCaptchaKey}
+        size="invisible"
+        ref={reCaptchaRegRef}
+      /> */}
     </section>
   );
 };

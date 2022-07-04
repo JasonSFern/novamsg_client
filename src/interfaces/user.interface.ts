@@ -1,3 +1,5 @@
+import { ReCaptchaToken } from './content.interface';
+
 export interface User {
   id: number;
   username: string;
@@ -24,15 +26,18 @@ export interface RegisterInput {
   username: string;
   email: string;
   password: string;
+  // token: ReCaptchaToken;
 }
 
 export interface LoginInput {
   username: string;
   password: string;
+  // token: ReCaptchaToken;
 }
 
 export interface PasswordChangeInput {
   id: number;
   new_password: string;
   current_password: string;
+  // token: ReCaptchaToken;
 }

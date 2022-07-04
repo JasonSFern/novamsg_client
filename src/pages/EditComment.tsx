@@ -41,7 +41,8 @@ const EditComment = () => {
 
   useEffect(() => {
     if (statusE == 'completed') {
-      navigate(`/posts/${loadedCommentG?.post_id}`);
+      if (!errorE)
+        navigate(`/posts/${loadedCommentG?.post_id}`, { replace: true });
     }
   }, [statusE, navigate]);
 
@@ -60,6 +61,7 @@ const EditComment = () => {
   return (
     <Fragment>
       {errorG && <p className="centered gen-message">{errorG}</p>}
+      {errorE && <p className="centered gen-message">{errorE}</p>}
       {!loadedCommentG?.content && (
         <p className="centered gen-message">No post found</p>
       )}

@@ -32,7 +32,7 @@ const ViewPost = () => {
           <LoadingSpinner />
         </div>
       )}
-      {error && <p className="centered focused gen-message">{error}</p>}
+      {error && <p className="centered gen-message">{error}</p>}
       {!loadedPost?.content && (
         <p>Post does not exists. This may be because it has been deleted</p>
       )}

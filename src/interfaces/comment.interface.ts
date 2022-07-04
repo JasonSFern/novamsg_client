@@ -1,4 +1,5 @@
 import { User } from './user.interface';
+import { ReCaptchaToken } from './content.interface';
 
 export interface Comment {
   id: number;
@@ -22,6 +23,7 @@ export interface CommentInput {
   user_id: number;
   post_id: number | string;
   content: string;
+  token: ReCaptchaToken;
 }
 
 export interface CommentLikesInput {

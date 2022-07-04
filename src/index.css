@@ -30,3 +30,7 @@ body {
   color: #ba1ed5;
   font-weight: 600;
 }
+
+.grecaptcha-badge {
+  visibility: hidden;
+}

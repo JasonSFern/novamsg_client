@@ -1,7 +1,9 @@
 import { Fragment, createRef, useContext, useState, useEffect } from 'react';
+// import ReCAPTCHA from 'react-google-recaptcha';
 
 import Button from '../UI/Button/Button';
 import LoadingSpinner from '../UI/LoadingSpinner/LoadingSpinner';
+import ReCaptchaBadge from '../UI/ReCaptchaBadge/ReCaptchaBadge';
 
 import useAxios from '../../hooks/use-axios';
 import { changeUserPass } from '../../lib/api';
@@ -13,6 +15,7 @@ import { PasswordChangeInput, User } from '../../interfaces/user.interface';
 
 const ProfileForm: React.FC = () => {
   const authCtx = useContext(AuthContext);
+  // const reCaptchaKey = authCtx.reCaptchaKey;
 
   const [showStatusMessage, setShowStatusMessage] = useState<boolean>(false);
   const [statusMessageType, setStatusMessageType] = useState<string>('success');
@@ -28,8 +31,9 @@ const ProfileForm: React.FC = () => {
   const currentPasswordInputRef = createRef<HTMLInputElement>();
   const newPasswordInputRef = createRef<HTMLInputElement>();
   const newPasswordInputConfRef = createRef<HTMLInputElement>();
+  // const reCaptchaProfRef = createRef<ReCAPTCHA>();
 
-  const submitHandler = (event: React.FormEvent<HTMLFormElement>) => {
+  const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     let enteredCurrentPassword,
@@ -41,6 +45,9 @@ const ProfileForm: React.FC = () => {
     enteredNewPassword = newPasswordInputRef.current?.value;
     enteredNewPasswordConf = newPasswordInputConfRef.current?.value;
     user_id = authCtx.userData?.id;
+
+    // const reCaptchaProfToken = await reCaptchaProfRef.current?.executeAsync();
+    // reCaptchaProfRef.current?.reset();
 
     if (
       user_id &&
@@ -54,6 +61,7 @@ const ProfileForm: React.FC = () => {
         id: user_id,
         current_password: enteredCurrentPassword,
         new_password: enteredNewPassword,
+        // token: reCaptchaProfToken,
       });
     } else {
       setShowStatusMessage(true);
@@ -154,6 +162,12 @@ const ProfileForm: React.FC = () => {
           </div>
         </form>
       )}
+      {/* <ReCaptchaBadge align="center" />
+      <ReCAPTCHA
+        sitekey={reCaptchaKey}
+        size="invisible"
+        ref={reCaptchaProfRef}
+      /> */}
     </section>
   );
 };

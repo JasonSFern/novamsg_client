@@ -1,5 +1,6 @@
 import { useState, useContext, useEffect, Fragment, createRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+// import ReCAPTCHA from 'react-google-recaptcha';
 
 import useAxios from '../../hooks/use-axios';
 import { login } from '../../lib/api';
@@ -8,6 +9,7 @@ import { LoginInput, UserSession } from '../../interfaces/user.interface';
 
 import Button from '../UI/Button/Button';
 import LoadingSpinner from '../UI/LoadingSpinner/LoadingSpinner';
+import ReCaptchaBadge from '../UI/ReCaptchaBadge/ReCaptchaBadge';
 
 import classes from './UserProfile.module.css';
 
@@ -22,6 +24,9 @@ const LoginForm: React.FC<LoginFormProps> = ({
   onSwitchAuthModeHandler,
   expiredSession,
 }) => {
+  const authCtx = useContext(AuthContext);
+  // const reCaptchaKey = authCtx.reCaptchaKey;
+
   const navigate = useNavigate();
 
   const [showStatusMessage, setShowStatusMessage] = useState<boolean>(false);
@@ -45,13 +50,15 @@ const LoginForm: React.FC<LoginFormProps> = ({
 
   const usernameInputRef = createRef<HTMLInputElement>();
   const passwordInputRef = createRef<HTMLInputElement>();
+  // const reCaptchaLogRef = createRef<ReCAPTCHA>();
 
-  const authCtx = useContext(AuthContext);
-
-  const submitHandler = (event: React.FormEvent<HTMLFormElement>): void => {
+  const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     let enteredUsername, enteredPassword;
+
+    // const reCaptchaLogToken = await reCaptchaLogRef.current?.executeAsync();
+    // reCaptchaLogRef.current?.reset();
 
     if (usernameInputRef.current != null)
       enteredUsername = usernameInputRef.current?.value;
@@ -65,6 +72,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
       sendRequest({
         username: enteredUsername,
         password: enteredPassword,
+        // token: reCaptchaLogToken,
       });
     }
   };
@@ -156,6 +164,12 @@ const LoginForm: React.FC<LoginFormProps> = ({
           </div>
         </form>
       )}
+      {/* <ReCaptchaBadge align="center" />
+      <ReCAPTCHA
+        sitekey={reCaptchaKey}
+        size="invisible"
+        ref={reCaptchaLogRef}
+      /> */}
     </section>
   );
 };

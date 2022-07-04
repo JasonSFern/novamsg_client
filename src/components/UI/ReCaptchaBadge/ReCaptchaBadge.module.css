@@ -1,0 +1,29 @@
+.recap {
+  color: white;
+  font-size: 10px;
+  width: 22rem;
+  border-radius: 8px;
+  padding: 0 0.5rem 0 0.5rem;
+  background-color: rgba(0, 0, 0, 0.15);
+  display: flex;
+  justify-content: space-between;
+}
+
+.center {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.left {
+  margin-right: 10px;
+}
+
+.image img {
+  width: 50px;
+}
+
+.disclaimer {
+  text-align: left;
+  padding-left: 1rem;
+  padding-top: 4px;
+}
